@@ -1,4 +1,4 @@
-![Logo](/images/logo.png)	   <h1>TTCP CAGE Challenge 1</h1>	      ![Robot](/images/robot.png)
+
 
 Recent advances in artificial intelligence \(AI\) technologies show promise for autonomous cyber operations \(ACO\), offering the potential for distributed, adaptive defensive measures at machine speed and scale\. The cyber domain is a particularly challenging domain for autonomous AI\. We nominate a challenge in this space which we believe requires further research in order to enable ACO to become an operational capability\. To facilitate this AI research, we, the TTCP<a id="footnote-ref-2"></a>[\[1\]](#footnote-2) CAGE<a id="footnote-ref-3"></a>[\[2\]](#footnote-3) working group, are releasing CybORG, an experimental platform using the OpenAI Gym interface together with a cyber security scenario and a challenge to which we invite researchers to respond\. 
 
