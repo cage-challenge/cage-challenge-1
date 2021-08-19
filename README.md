@@ -45,23 +45,26 @@ Every time the blue agent takes a step, the green agent will firstly choose and 
 
 The blue agent receives a negative reward any time the red agent gets administrator access to a system\. They continue to receive negative rewards as long as the red agent maintains administrator access\. The amount of each reward is dependent on the relative importance of that host to the confidentiality or availability of the entire system: 0\.1 and 1\.0  for low and high importance systems respectively\. They also receive a negative reward if the red agent successfully uses the Impact action on the operational server \(\-10\) or the blue agent uses the restore action \(\-1\)\. The final score for a blue agent is the cumulative reward received by the agent over the course of the scenario run\.
 
-__Subnet__
+<table style="width:100%">
+  <tr>
+    <th>Subnet</th>
+    <th>Hosts</th>
+    <th>Privileged Red Access Event Reward</th>
+  </tr>
+  <tr>
+    <td>Subnet 1</td>
+    <td>User hosts</td>
+    <td>-0.1</td>
+  </tr>
+  <tr>
+    <td>Subnet 2</td>
+    <td>Enterprise hosts 0, 1 & 2</td>
+    <td>-1</td>
+  </tr>
+</table>
 
-__Hosts__
 
-__Privileged Red Access Event Reward__
 
-Subnet 1
-
-User hosts
-
-\-0\.1
-
-Subnet 2
-
-Enterprise hosts 0, 1 & 2
-
-\-1
 
 Subnet 3
 
