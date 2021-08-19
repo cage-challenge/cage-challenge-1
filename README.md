@@ -133,6 +133,6 @@ September/October 2021: Release of an additional version of the Challenge proble
 
 The CAGE team will continue to develop this platform and plan to announce a new challenge problem after the close of this challenge\. Future topics may include expanded action sets, the introduction of multiple agents, and more complex and realistic scenarios\. 
 
-![Appendix1](/images/appendix1.png)
+![Appendix1](/images/appendix1.PNG)
 
-![Appendix2](/images/appendix2.png)
+![Appendix2](/images/appendix2.PNG)
