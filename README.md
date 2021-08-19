@@ -23,6 +23,8 @@ The network owner has undertaken an evaluation of the factory systems and contra
 
 This challenge is designed for teams to create a blue agent to defend a network against a red agent, with a green agent representing the effect of network users\. The network is illustrated below\. It is divided into three subnets\. Subnet 1 consists of user hosts that are not critical\. Subnet 2 consists of enterprise servers designed to support the user activities on Subnet 1\. Subnet 3 contains the critical operational server and two user hosts\.
 
+![Figure1](/images/figure1.png)
+
 Each scenario run is a fixed number of steps representing a fixed period of time\. An episode will terminate only once the time expires\. At each step, the red and blue agents each choose one action from a set of high\-level actions that are described in Appendix A\. CybORG will take the chosen action and select a context\-appropriate low\-level action, such as modelling the behaviour of an operating system\-specific exploit in response to a high\-level exploit action by the red agent\. This is designed to reduce the action space and make a wider range of learning approaches tractable\.
 
 The red agent starts each scenario run with an initial foothold: access to one of the user machines in Subnet 1\. The red agent can then choose actions to perform reconnaissance on hosts in the enterprise network \(Subnet 2\) and then exploit these hosts and perform privilege escalation\. Once they have exploited the server in the enterprise network that has the Operational Server IP address on it, they can access the operational network \(Subnet 3\)\. The Operational Server maintains a service that is key to the system owners’ operations; the goal of the red agent is to disrupt this service for as long as possible through the Impact action\.
@@ -33,7 +35,9 @@ The blue agent is assumed to start each scenario run with monitoring tools insta
 
 The effect of each action on the state of a targeted host is summarised in Figure 1\. 
 
-Figure  Effect of actions on host state \(initial version\)
+![Figure2](/images/figure2.png)
+
+Figure 1 Effect of actions on host state \(initial version\)
 
 The green agent only performs the discovery action, and does not exploit hosts\. It should prevent the blue agent from assuming all network activity is due to the red agent\.
 
@@ -75,7 +79,9 @@ User hosts
 
 As an extension of the first challenge, we will later release an additional action for blue agents: Misinform\. This action will allow the blue agent to set up decoy services, intended to raise an alarm when the red agent accesses them\. The effect of each action on the state in the second release is summarised in Figure 2\. 
 
-Figure  Effect of actions on host state \(extended version\)
+![Figure3](/images/figure3.png)
+
+Figure 2 Effect of actions on host state \(extended version\)
 
 # Instructions for obtaining environment
 
