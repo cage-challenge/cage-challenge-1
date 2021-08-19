@@ -79,7 +79,7 @@ We intend to publish the final results at the AAAI\-22 Workshop on Artificial In
 
 We also invite teams to submit full papers on their work on this CAGE challenge or using the CybORG environment to AAAI\-22, IJCAI\-22, or any other venue of their choice\. Please cite the challenge announcement as follows to reference the challenge:
 
-<b>TBA<b> 
+<b>TBA</b> 
 
 In addition, authors may reference the following paper that describes CybORG:
 
