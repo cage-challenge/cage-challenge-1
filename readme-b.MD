@@ -79,7 +79,7 @@ We intend to publish the final results at the AAAI\-22 Workshop on Artificial In
 
 We also invite teams to submit full papers on their work on this CAGE challenge or using the CybORG environment to AAAI\-22, IJCAI\-22, or any other venue of their choice\. Please cite the challenge announcement as follows to reference the challenge:
 
-<b>TBA</b> 
+_[CAGE, 2021] CAGE. CAGE Challenge 1. In IJCAI-21 1st International Workshop on Adaptive Cyber Defense. _
 
 In addition, authors may reference the following paper that describes CybORG:
 
