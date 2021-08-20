@@ -107,9 +107,9 @@ We will continue to develop this platform and plan to announce a new challenge p
 
 ![Appendix2](/images/appendix2.PNG)
 
+[1] Open Command and Control (OpenC2), <a>https://openc2.org/</a>
 
-  [1] Open Command and Control (OpenC2), <a>https://openc2.org/</a>
-  [2] MITRE ATT&CK, <a>https://attack.mitre.org/</a>
+[2] MITRE ATT&CK, <a>https://attack.mitre.org/</a>
 
 
 
