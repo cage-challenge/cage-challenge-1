@@ -79,8 +79,6 @@ We intend to publish the final results at the AAAI\-22 Workshop on Artificial In
 
 We also invite teams to submit full papers on their work on this CAGE challenge or using the CybORG environment to AAAI\-22, IJCAI\-22, or any other venue of their choice\. Please cite the challenge announcement as follows to reference the challenge:
 
-[CAGE, 2021] CAGE. CAGE Challenge 1. In <i>IJCAI-21 1st International Workshop on Adaptive Cyber Defense.</i>
-
 ```
 @PROCEEDINGS{cage_challenge_announcement,
   author = {CAGE},
@@ -88,16 +86,6 @@ We also invite teams to submit full papers on their work on this CAGE challenge 
   booktitle = {IJCAI-21 1st International Workshop on Adaptive Cyber Defense.} 
   Publisher = {arXiv},
   Year = {2021}
-}
-```
-
-```
-@misc{cage_challenge_1,
-  Title = {Cyber Autonomy Gym for Experimentation Challenge 1},
-  Note = {Created by Maxwell Standen, David Bowman, Son Hoang, Toby Richer, Martin Lucas},
-  Publisher = {GitHub},
-  Howpublished = {\url{https://github.com/cage-challenge/cage-challenge-1}},
-  Year = {2021},
 }
 ```
 
@@ -110,6 +98,18 @@ In addition, authors may reference the following paper that describes CybORG:
   booktitle = {IJCAI-21 1st International Workshop on Adaptive Cyber Defense.} 
   Publisher = {arXiv},
   Year = {2021}
+}
+```
+
+The challenge software can be referenced as:
+
+```
+@misc{cage_challenge_1,
+  Title = {Cyber Autonomy Gym for Experimentation Challenge 1},
+  Note = {Created by Maxwell Standen, David Bowman, Son Hoang, Toby Richer, Martin Lucas},
+  Publisher = {GitHub},
+  Howpublished = {\url{https://github.com/cage-challenge/cage-challenge-1}},
+  Year = {2021},
 }
 ```
 
