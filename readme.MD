@@ -58,7 +58,7 @@ Figure 2 Effect of actions on host state \(extended version\)
 
 # Instructions for obtaining environment
 
-The CAGE challenge environment, CybORG, and first challenge are available for download from GitHub: [https://github\.com/cage\-challenge/cage\-challenge\-1](https://github.com/cage-challenge/cage-challenge-1)
+The CAGE challenge environment, CybORG, and first challenge are available for download from GitHub: [https://github\.com/cage\-challenge/cage\-challenge\-1/tree/main/CybORG](https://github.com/cage-challenge/cage-challenge-1/tree/main/CybORG)
 
 The CAGE challenge is written in Python\. Dependencies can be installed using pip\. Further instructions are included on the GitHub page\. The challenge includes red agents to test against, and an example blue agent\. Submissions should implement the same methods of the example blue agent\.
 
