@@ -44,7 +44,7 @@ The green agent only performs the discovery action, and does not exploit hosts\.
 
 Every time the blue agent takes a step, the green agent will firstly choose and enact an action, followed by the red agent, before the blue agent’s action is finally enacted\. The blue agent then receives an observation and reward based on the events which occurred during this entire process\. 
 
-The blue agent receives a negative reward any time the red agent gets administrator access to a system\. They continue to receive negative rewards as long as the red agent maintains administrator access\. The amount of each reward is dependent on the relative importance of that host to the confidentiality or availability of the entire system: 0\.1 and 1\.0  for low and high importance systems respectively\. They also receive a negative reward if the red agent successfully uses the Impact action on the operational server \(\-10\) or the blue agent uses the restore action \(\-1\)\. The final score for a blue agent is the cumulative reward received by the agent over the course of the scenario run\.
+The blue agent receives a negative reward any time the red agent gets administrator access to a system\. They continue to receive negative rewards as long as the red agent maintains administrator access\. The amount of each reward is dependent on the relative importance of that host to the confidentiality or availability of the entire system: -0\.1 and -1\.0 for low and high importance systems respectively\. They also receive a negative reward if the red agent successfully uses the Impact action on the operational server \(\-10\) or the blue agent uses the restore action \(\-1\)\. The final score for a blue agent is the cumulative reward received by the agent over the course of the scenario run\.
 
 ![Table](/images/table1.PNG)
 
@@ -60,7 +60,7 @@ Figure 2 Effect of actions on host state \(extended version\)
 
 The CAGE challenge environment, CybORG, and first challenge are available for download from GitHub: [https://github\.com/cage\-challenge/cage\-challenge\-1](https://github.com/cage-challenge/cage-challenge-1)
 
-The CAGE challenge is written in Python \(it requires Python version 3\.7\.5 to be installed\)\. Dependencies can be installed using pip\. Further instructions are included on the GitHub page\. The challenge includes red agents to test against, and an example blue agent\. Submissions should implement the same methods of the example blue agent\.
+The CAGE challenge is written in Python\. Dependencies can be installed using pip\. Further instructions are included on the GitHub page\. The challenge includes red agents to test against, and an example blue agent\. Submissions should implement the same methods of the example blue agent\.
 
 # Instructions for submitting responses
 
@@ -79,7 +79,7 @@ We intend to publish the final results at the AAAI\-22 Workshop on Artificial In
 
 We also invite teams to submit full papers on their work on this CAGE challenge or using the CybORG environment to AAAI\-22, IJCAI\-22, or any other venue of their choice\. Please cite the challenge announcement as follows to reference the challenge:
 
-<b>TBA</b> 
+[TTCP CAGE, 2021] TTCP CAGE Working Group. TTCP CAGE Challenge 1. In <i>IJCAI-21 1st International Workshop on Adaptive Cyber Defense.</i> 
 
 In addition, authors may reference the following paper that describes CybORG:
 
