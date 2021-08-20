@@ -1,0 +1,14 @@
+Kali_Box:
+  path: Kali_Box_image
+Internal:
+  path: Internal_image
+Gateway:
+  path: Gateway_image
+Velociraptor_Server:
+  path: Velociraptor_Server_image
+linux_user_host:
+  path: linux_user_host_image
+windows_user_host:
+  path: windows_user_host_image
+OP_Server:
+  path: OP_Server_image
