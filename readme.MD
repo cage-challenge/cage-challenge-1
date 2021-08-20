@@ -84,7 +84,7 @@ We also invite teams to submit full papers on their work on this CAGE challenge 
 ```
 @misc{cage_challenge_1,
   Title = {Cyber Autonomy Gym for Experimentation Challenge 1},
-  Note = {Created by Maxwell Standen, David Bowman, Son Hoang, Toby Richer, Martin Lucas, Richard Van Tassel},
+  Note = {Created by Maxwell Standen, David Bowman, Son Hoang, Toby Richer, Martin Lucas},
   Publisher = {GitHub},
   Howpublished = {\url{https://github.com/cage-challenge/cage-challenge-1}},
   Year = {2021},
