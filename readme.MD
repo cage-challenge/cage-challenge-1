@@ -81,6 +81,16 @@ We also invite teams to submit full papers on their work on this CAGE challenge 
 
 [CAGE, 2021] CAGE. CAGE Challenge 1. In <i>IJCAI-21 1st International Workshop on Adaptive Cyber Defense.</i>
 
+```
+@misc{cage_challenge_1,
+  Title = {Cyber Autonomy Gym for Experimentation Challenge 1},
+  Note = {Created by Maxwell Standen, David Bowman, Son Hoang, Toby Richer, Martin Lucas, Richard Van Tassel},
+  Publisher = {GitHub},
+  Howpublished = {\url{https://github.com/cage-challenge/cage-challenge-1}},
+  Year = {2021},
+}
+```
+
 In addition, authors may reference the following paper that describes CybORG:
 
 \[Standen *et al\., *2021\] Maxwell Standen, Martin Lucas, David Bowman, Toby J\. Richer, Junae Kim and Damian Marriott\. CybORG: A Gym for the Development of Autonomous Cyber Agents\. In *IJCAI\-21 1st International Workshop on Adaptive Cyber Defense*\.
