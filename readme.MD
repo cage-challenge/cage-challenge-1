@@ -71,7 +71,7 @@ When submitting a blue agent, teams should include:
 - A team name and contact details\.
 - The code implementing the agent, with a list of dependencies\.
 - A description of your approach in developing a blue agent\.
-- The files and terminal output of the evaluation function
+- The files and terminal output of the evaluation function\.
 
  
 
