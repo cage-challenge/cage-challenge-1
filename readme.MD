@@ -75,7 +75,7 @@ When submitting a blue agent, teams should include:
 
  
 
-We intend to publish the final results at the AAAI\-22 Workshop on Artificial Intelligence for Cyber Security \(AICS\) \(subject to confirmation of workshop\)\. 
+We intend to publish the final results at the AAAI\-22 Workshop on Artificial Intelligence for Cyber Security \(AICS\)\. 
 
 We also invite teams to submit full papers on their work on this CAGE challenge or using the CybORG environment to AAAI\-22, IJCAI\-22, or any other venue of their choice\. Please cite the challenge announcement as follows to reference the challenge:
 
