@@ -153,7 +153,6 @@ def test_RedTableWrapper():
     # Expected table same as previous
     assert observation.get_string() == expected_table.get_string()
 
-@pytest.mark.skip
 def test_RedTableWrapper_blue_remove_agent():
 
     path = str(inspect.getfile(CybORG))
@@ -247,9 +246,8 @@ def test_RedTableWrapper_blue_remove_agent():
 
     expected_table = get_table(expected_rows)
     assert observation.get_string() == expected_table.get_string()
-    cyborg.step() # extra step to give blue time to react
-    cyborg.step() # extra step to give blue time to react
-    cyborg.step() # extra step to give blue time to react
+    for i in range(7):
+        cyborg.step() # extra steps to give blue time to react
     # Test Privilege Escalate
     action = PrivilegeEscalate(hostname='User3', agent=agent_name, session=0)
     results = cyborg.step(action=action, agent=agent_name)
@@ -308,12 +306,13 @@ def test_get_attr(cyborg):
             'get_rewards', 'get_agent_state']:
         assert cyborg.get_attr(attribute) == cyborg.env.get_attr(attribute)
 
-@pytest.mark.skip
 def test_get_observation(cyborg):
     red_results = cyborg.reset(agent='Red')
     step_obs = red_results.observation
     method_obs = cyborg.get_observation('Red')
-    breakpoint()
+    if cyborg.output_mode == 'table':
+        step_obs = step_obs.get_string()
+        method_obs = method_obs.get_string()
     assert step_obs == method_obs
 
     blue_results = cyborg.reset(agent='Blue')

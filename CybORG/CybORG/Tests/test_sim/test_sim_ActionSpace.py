@@ -3,8 +3,8 @@ from random import choice
 
 import pytest
 
-from CybORG.Agents.Wrappers.IntListToAction import IntListToActionWrapper
-from CybORG.Agents.Wrappers.ReduceActionSpaceWrapper import ReduceActionSpaceWrapper
+from CybORG.Agents.Wrappers import EnumActionWrapper
+from CybORG.Agents.Wrappers import ReduceActionSpaceWrapper
 from CybORG.Shared.Actions import MeterpreterIPConfig, MSFAutoroute, MS17_010_PSExec, MSFPortscan, MSFPingsweep, \
     UpgradeToMeterpreter, SSHLoginExploit, Sleep, DiscoverNetworkServices, \
     ExploitRemoteService
@@ -195,22 +195,20 @@ def test_update_action_space_from_observation_session(create_sim_action_space):
     action_space.update(obs.data)
     assert 5 in action_space.client_session
 
-@pytest.mark.skipif()
 def test_action_space_scenario1_sized(create_cyborg_sim):
     cyborg, scenario = create_cyborg_sim
-    if scenario == 'Scenario1':
-        pytest.skip('Scenario1 has an expanding number of ports due to observation of ephemeral ports')
-    cyborg = IntListToActionWrapper(ReduceActionSpaceWrapper(cyborg))
+    # if scenario == 'Scenario1':
+    #     pytest.skip('Scenario1 has an expanding number of ports due to observation of ephemeral ports')
+    cyborg = EnumActionWrapper(ReduceActionSpaceWrapper(cyborg))
     action_space = cyborg.get_action_space('Red')
     for j in range(100):
         for i in range(100):
-            action = [choice(range(i)) for i in action_space]
+            action = choice(range(action_space))
             # print(action)
             cyborg.step(action=action, agent='Red')
             old_action_space = action_space
             action_space = cyborg.get_action_space('Red')
-            assert action_space == old_action_space, f'action {i}: {action} {cyborg.get_action(agent="Red", action=action)} {cyborg.param_name} resulted in change in action_space size'
-
+            assert action_space == old_action_space, f'action {i}: {action} {cyborg.get_last_action(agent="Red")} with observation {cyborg.get_observation("Red")} resulted in change in action_space size'
         res = cyborg.reset('Red')
         action_space = res.action_space
 

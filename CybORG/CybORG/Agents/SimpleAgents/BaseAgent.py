@@ -1,6 +1,5 @@
 from CybORG.Shared import Results
 
-
 class BaseAgent:
 
     def train(self, results: Results):

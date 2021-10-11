@@ -298,6 +298,9 @@ class Host(Entity):
                             open_port['remote_address'] = p.pop('remote_address')
                         if 'transport_protocol' in p:
                             open_port['transport_protocol'] = p.pop('transport_protocol')
+                        if len(process.properties) > 0:
+                            p['properties'] = process.properties
+
                         temp = p
                         temp['open_ports'] = []
                         if len(open_port) > 0:
@@ -356,6 +359,8 @@ class Host(Entity):
                             open_port['remote_address'] = p.pop('remote_address')
                         if 'transport_protocol' in p:
                             open_port['transport_protocol'] = p.pop('transport_protocol')
+                        if len(process.properties) > 0:
+                            p['properties'] = process.properties
                         temp = p
                         temp['open_ports'] = []
                         if len(open_port) > 0:

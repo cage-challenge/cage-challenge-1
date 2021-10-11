@@ -195,6 +195,6 @@ def test_get_ip_map(cyborg):
 def test_get_rewards(cyborg):
     assert cyborg.get_rewards() == cyborg.get_attr('get_rewards')()
 
-@pytest.mark.skip
+@pytest.mark.skip("Not Implemented Yet")
 def test_true_obs_to_table():
     assert False

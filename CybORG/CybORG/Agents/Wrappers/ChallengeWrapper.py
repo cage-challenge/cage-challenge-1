@@ -1,4 +1,4 @@
-from CybORG.Agents.Wrappers import BaseWrapper, OpenAIGymWrapper, BlueTableWrapper,RedTableWrapper,EnumActionWrapper,ReduceActionSpaceWrapper
+from CybORG.Agents.Wrappers import BaseWrapper, OpenAIGymWrapper, BlueTableWrapper,RedTableWrapper,EnumActionWrapper
 
 
 class ChallengeWrapper(BaseWrapper):
@@ -13,11 +13,12 @@ class ChallengeWrapper(BaseWrapper):
             raise ValueError('Invalid Agent Name')
 
         env = table_wrapper(env, output_mode='vector')
-        env = ReduceActionSpaceWrapper(env)
         env = EnumActionWrapper(env)
         env = OpenAIGymWrapper(agent_name=agent_name, env=env)
 
         self.env = env
+        self.action_space = self.env.action_space
+        self.observation_space = self.env.observation_space
 
     def step(self,action=None):
         return self.env.step(action=action)

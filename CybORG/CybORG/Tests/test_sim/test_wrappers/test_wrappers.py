@@ -14,6 +14,7 @@ from CybORG.Shared.Actions import PrivilegeEscalate, MS17_010_PSExec, UpgradeToM
 import pytest
 
 
+@pytest.mark.skip
 def test_reduce_action_space(create_cyborg_sim):
     cyborg, scenario = create_cyborg_sim
     wrapped_cyborg = ReduceActionSpaceWrapper(cyborg)
@@ -134,6 +135,7 @@ def test_reduce_action_space(create_cyborg_sim):
     assert expected_action_space(cyborg) == result.action_space
 
 
+@pytest.mark.skip
 def test_intlist_to_action_wrapper_action_space(create_cyborg_sim):
     cyborg, scenario = create_cyborg_sim
     wrapped_cyborg = IntListToActionWrapper(cyborg)
@@ -149,9 +151,10 @@ def test_intlist_to_action_wrapper_action_space(create_cyborg_sim):
         assert type(result.action_space) is list, f"Action space {wrapped_cyborg.param_name}"
 
 
+@pytest.mark.skip
 def test_reduced_intlist_to_action_wrapper_action_space(create_cyborg_sim):
     cyborg, scenario = create_cyborg_sim
-    wrapped_cyborg = IntListToActionWrapper(ReduceActionSpaceWrapper(cyborg))
+    wrapped_cyborg = ReduceActionSpaceWrapper(IntListToActionWrapper(cyborg))
 
     if scenario == 'Scenario1':
         pytest.skip('Scenario1 not currently supported due to expanding action space')
@@ -275,3 +278,4 @@ def test_get_attr_fail(create_cyborg_sim, attribute: str, wrappers: list):
         cyborg = wrapper(cyborg)
     value = cyborg.get_attr(attribute)
     assert value is None
+

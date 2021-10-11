@@ -14,7 +14,6 @@ class BlueReactRemoveAgent(BaseAgent):
     def get_action(self, observation, action_space):
         # add suspicious hosts to the hostlist if monitor found something
         # added line to allow for automatic monitoring.
-        self.last_action = 'Monitor'
         if self.last_action is not None and self.last_action == 'Monitor':
             for host_name, host_info in [(value['System info']['Hostname'], value) for key, value in observation.items() if key != 'success']:
                 if host_name not in self.host_list and host_name != 'User0' and 'Processes' in host_info and len([i for i in host_info['Processes'] if 'PID' in i]) > 0:
@@ -47,10 +46,9 @@ class BlueReactRestoreAgent(BaseAgent):
     def get_action(self, observation, action_space):
         # add suspicious hosts to the hostlist if monitor found something
         # added line to reflect changes in blue actions
-        self.last_action = 'Monitor'
         if self.last_action is not None and self.last_action == 'Monitor':
-            for host_name in [value['System info']['Hostname'] for key, value in observation.items() if key != 'success']:
-                if host_name not in self.host_list and host_name != 'User0':
+            for host_name, host_info in [(value['System info']['Hostname'], value) for key, value in observation.items() if key != 'success']:
+                if host_name not in self.host_list and host_name != 'User0' and 'Processes' in host_info and len([i for i in host_info['Processes'] if 'PID' in i]) > 0:
                     self.host_list.append(host_name)
         # assume a single session in the action space
         session = list(action_space['session'].keys())[0]

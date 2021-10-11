@@ -119,6 +119,9 @@ def test_blue_analyse_on_red_killchain(security_values,availability_values):
     for hostname in hostnames:
         action = PrivilegeEscalate(agent='Red', hostname=hostname, session=session)
         cyborg.step(action=action, agent='Red')
+        if hostnames[hostname]:
+            last_action = cyborg.get_last_action('Red')
+            assert last_action == action
         # test if output of observation matches expected output
         if 'User' in hostname:
             if '0' in hostname or '1' in hostname or '2' in hostname:

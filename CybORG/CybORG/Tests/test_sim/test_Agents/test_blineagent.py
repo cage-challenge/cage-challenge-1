@@ -1,11 +1,13 @@
 import inspect
+import random
 
 from CybORG import CybORG
 from CybORG.Agents import SleepAgent
 from CybORG.Agents.SimpleAgents.B_line import B_lineAgent
 from CybORG.Agents.SimpleAgents.BlueReactAgent import BlueReactRemoveAgent, BlueReactRestoreAgent
 from CybORG.Shared.Enums import TrinaryEnum
-from CybORG.Shared.Actions import Impact, Remove, Monitor
+from CybORG.Shared.Actions import Impact, Remove, Monitor, ExploitRemoteService
+from CybORG.Shared.Actions import Restore
 
 import pytest
 
@@ -35,6 +37,7 @@ def test_blineagent_step():
             reward += 1
         assert result.reward == round(reward, 1), f'error for step {1} action {result.action}'
 
+    # Testing whether this all works after a reset
     cyborg.reset()
 
     reward = 0
@@ -108,12 +111,10 @@ def test_blineagent_vs_react_remove_agent_step():
     session = list(action_space['session'].keys())[0]
     for i in range(50):
         result = cyborg.step(agent='Red')
-        if i in []:
+        if i in range(6,60,2) and i not in [14,16]:
             assert result.observation['success'] == False, f'Successful action {result.action} for step {i}'
         else:
             assert result.observation['success'] == True, f'Unsuccessful action {result.action} for step {i}'
-        if i > 35:
-            assert result.reward > 10.
 
 
 def test_blineagent_vs_react_restore_agent_step():
@@ -124,12 +125,61 @@ def test_blineagent_vs_react_restore_agent_step():
     session = list(action_space['session'].keys())[0]
     for i in range(50):
         result = cyborg.step(agent='Red')
-        if not result.observation['success']:
-            print(i)
-            breakpoint()
-        if i in list(range(5, 50)):
+        if i in range(3,11,2) or i in range(14,50,2):
             assert result.observation['success'] == False, f'Successful action {result.action} for step {i}'
         else:
             assert result.observation['success'] == True, f'Unsuccessful action {result.action} for step {i}'
 
-#
+def test_bline_resilience():
+    path = str(inspect.getfile(CybORG))
+    path = path[:-10] + f'/Shared/Scenarios/Scenario1b.yaml'
+    env = CybORG(path, 'sim', agents={'Red': B_lineAgent})
+
+    results = env.reset('Red')
+    obs = results.observation
+    action_space = results.action_space
+
+    # B_line performs full killchain
+    for i in range(16):
+        env.step()
+
+    # Blue Wipes out Red
+    action = Restore(hostname='Op_Server0',session=0,agent='Blue')
+    env.step(action=action,agent='Blue')
+
+    action = Restore(hostname='Enterprise2',session=0,agent='Blue')
+    env.step(action=action,agent='Blue')
+
+    action = Restore(hostname='Enterprise1',session=0,agent='Blue')
+    env.step(action=action,agent='Blue')
+
+    # Red re-exploits
+    for i in range(25):
+        env.step()
+        obs = env.get_observation('Red')
+        success = obs['success']
+        if i > 2:
+            assert success == True, f'failing on step {i}'
+
+
+def test_bline_reset():
+    path = str(inspect.getfile(CybORG))
+    path = path[:-10] + f'/Shared/Scenarios/Scenario1b.yaml'
+    env = CybORG(path, 'sim', agents={'Red': B_lineAgent})
+
+    results = env.reset('Red')
+    obs = results.observation
+    action_space = results.action_space
+
+    history = []
+    # B_line performs full killchain
+    for i in range(16):
+        env.step()
+        history.append(env.get_last_action('Red').__class__.__name__)
+
+    env.reset()
+    for i in range(16):
+        env.step()
+        assert env.get_last_action('Red').__class__.__name__ == history[i]
+
+

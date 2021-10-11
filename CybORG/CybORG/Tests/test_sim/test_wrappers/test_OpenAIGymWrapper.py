@@ -5,8 +5,6 @@ from CybORG import CybORG
 from CybORG.Agents.Wrappers.OpenAIGymWrapper import OpenAIGymWrapper
 from CybORG.Agents.Wrappers.FixedFlatWrapper import FixedFlatWrapper
 from CybORG.Agents.Wrappers.EnumActionWrapper import EnumActionWrapper
-from CybORG.Agents.Wrappers.IntListToAction import IntListToActionWrapper
-from CybORG.Agents.Wrappers.ReduceActionSpaceWrapper import ReduceActionSpaceWrapper
 from CybORG.Agents.Wrappers import BlueTableWrapper
 from CybORG.Agents import BlueMonitorAgent, B_lineAgent 
 
@@ -16,7 +14,7 @@ def test_steps():
     path = str(inspect.getfile(CybORG))
     path = path[:-10] + '/Shared/Scenarios/Scenario1b.yaml'
     cyborg = OpenAIGymWrapper(agent_name=agent,
-                              env=FixedFlatWrapper(EnumActionWrapper(ReduceActionSpaceWrapper(CybORG(path, 'sim')))))
+                              env=FixedFlatWrapper(EnumActionWrapper(CybORG(path, 'sim'))))
     cyborg.reset()
     action = cyborg.action_space.sample()
     obs, reward, done, info = cyborg.step(action)
@@ -37,12 +35,13 @@ def test_steps():
     assert cyborg.observation_space.shape == (11293,)
 
 
+@pytest.mark.skip("Deprecated")
 def test_steps_multi_discrete():
     agent = 'Red'
     path = str(inspect.getfile(CybORG))
     path = path[:-10] + '/Shared/Scenarios/Scenario1b.yaml'
     cyborg = OpenAIGymWrapper(agent_name=agent,
-                              env=FixedFlatWrapper(IntListToActionWrapper(ReduceActionSpaceWrapper(CybORG(path, 'sim')))))
+                              env=FixedFlatWrapper(EnumActionWrapper(CybORG(path, 'sim'))))
     cyborg.reset()
     action = cyborg.action_space.sample()
     obs, reward, done, info = cyborg.step(action)
@@ -67,7 +66,7 @@ def test_steps_random():
     agent = 'Red'
     path = str(inspect.getfile(CybORG))
     path = path[:-10] + '/Shared/Scenarios/Scenario1b.yaml'
-    cyborg = OpenAIGymWrapper(agent_name=agent, env=FixedFlatWrapper(EnumActionWrapper(ReduceActionSpaceWrapper(CybORG(path, 'sim')))))
+    cyborg = OpenAIGymWrapper(agent_name=agent, env=FixedFlatWrapper(EnumActionWrapper(CybORG(path, 'sim'))))
     cyborg.reset()
     original_action = cyborg.action_space.n
     for i in range(100):
@@ -86,11 +85,12 @@ def test_steps_random():
                 break
         cyborg.reset()
 
+@pytest.mark.skip("Deprecated")
 def test_steps_random_multi_discrete():
     agent = 'Red'
     path = str(inspect.getfile(CybORG))
     path = path[:-10] + '/Shared/Scenarios/Scenario1b.yaml'
-    cyborg = OpenAIGymWrapper(agent_name=agent, env=FixedFlatWrapper(IntListToActionWrapper(ReduceActionSpaceWrapper(CybORG(path, 'sim')))))
+    cyborg = OpenAIGymWrapper(agent_name=agent, env=FixedFlatWrapper(EnumActionWrapper(CybORG(path, 'sim'))))
     cyborg.reset()
     original_action = cyborg.action_space.nvec
     for i in range(100):
@@ -113,8 +113,7 @@ def test_steps_random_multi_discrete():
 def cyborg(request,agents = {'Blue':BlueMonitorAgent,'Red':B_lineAgent},seed = 1):
     path = str(inspect.getfile(CybORG))
     path = path[:-10] + '/Shared/Scenarios/Scenario1b.yaml'
-    env = FixedFlatWrapper(IntListToActionWrapper(ReduceActionSpaceWrapper( \
-        CybORG(path, 'sim', agents=agents))))
+    env = FixedFlatWrapper(EnumActionWrapper(CybORG(path, 'sim', agents=agents)))
     cyborg = OpenAIGymWrapper(env=env,agent_name=request.param)
     cyborg.set_seed(seed)
     return cyborg
@@ -142,8 +141,7 @@ def test_get_agent_state(cyborg):
 
 def test_get_action_space(cyborg):
     red_space = cyborg.get_action_space(cyborg.agent)
-    assert type(red_space) == list
-    assert len(red_space) == 4 if cyborg.agent=='Red' else 2
+    assert type(red_space) == int
 
 def test_get_last_action(cyborg):
     cyborg.reset()

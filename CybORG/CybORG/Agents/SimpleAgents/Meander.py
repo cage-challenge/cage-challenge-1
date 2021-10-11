@@ -26,6 +26,8 @@ class RedMeanderAgent(BaseAgent):
                 self.host_ip_map[[value['System info']['Hostname'] for key, value in observation.items()
                                   if key != 'success' and 'System info' in value
                                   and 'Hostname' in value['System info']][0]] = self.last_ip
+            else:
+                self.escalated_hosts = []
             self.last_ip = None
         if self.last_host is not None:
             if observation['success'] == False:
@@ -51,16 +53,24 @@ class RedMeanderAgent(BaseAgent):
             self.scanned_ips.append(address)
 
             return DiscoverNetworkServices(ip_address=address, agent='Red', session=session)
-        # priv esc on all hosts in client subnet
+
+        # priv esc on owned hosts
         hostnames = action_space['hostname']
         for hostname in hostnames:
-            # test if output of observation matches expected output
-            if not action_space["hostname"][hostname] or hostname in self.escalated_hosts:
+            # test if host is not known
+            if not action_space["hostname"][hostname]:
+                continue
+            # test if host is already priv esc
+            if hostname in self.escalated_hosts:
+                continue
+            # test if host is exploited
+            if hostname in self.host_ip_map and self.host_ip_map[hostname] not in self.exploited_ips:
                 continue
             self.escalated_hosts.append(hostname)
             self.last_host = hostname
             return PrivilegeEscalate(hostname=hostname, agent='Red', session=session)
-        # own all hosts on the client subnet
+
+        # access unexploited hosts
         for address in addresses:
             # test if output of observation matches expected output
             if not action_space["ip_address"][address] or address in self.exploited_ips:

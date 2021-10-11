@@ -76,4 +76,3 @@ def test_operational_nacl_aug20_bug(cyborg_2):
     assert cyborg_2.get_observation('Red')['success'] == False
     assert cyborg_2.get_rewards()['Blue'] > -10
 
-

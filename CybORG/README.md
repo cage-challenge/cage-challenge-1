@@ -9,25 +9,10 @@ A cyber security research environment for training and development of security h
 Install CybORG locally using pip
 
 ```
-# from the root Autonomous-Cyber-Ops directory
+# from the cage-challenge-1/CybORG directory
 pip install -e .
 ```
 
-## Building documentation
-
-Once you have installed the CybORG python library, the documentation can be build with:
-
-```
-# From the root Autonomous-Cyber-Ops directory
-cd docs
-make html
-```
-
-The documentation will then be located in the `docs/_build/html` directory. Specifically, you can view the main documentation page by opening `docs/_build/html/index.html` in your browser.
-
-# Usage
-
- 
 
 ## Creating the environment
 Create a CybORG environment with:
@@ -105,13 +90,13 @@ agent = BlueLoadAgent()
 ```
 
 ## Additional Readings
-For further guidance on the CybORG environment please refer to this [guide.](CybORG/FAQ/CybORG__A_Guide_for_Me.md) 
+For further guidance on the CybORG environment please refer to the [tutorial notebook series.](CybORG/Tutorial)
 
 ## Citing this project
 ```
 @misc{cage_challenge_1,
   Title = {Cyber Autonomy Gym for Experimentation Challenge 1},
-  Note = {Created by Maxwell Standen, David Bowman, Son Hoang, Toby Richer and Martin Lucas},
+  Note = {Created by Maxwell Standen, David Bowman, Son Hoang, Toby Richer, Martin Lucas},
   Publisher = {GitHub},
   Howpublished = {\url{https://github.com/cage-challenge/cage-challenge-1}},
   Year = {2021},
