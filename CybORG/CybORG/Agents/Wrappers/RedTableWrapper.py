@@ -21,8 +21,11 @@ class RedTableWrapper(BaseWrapper):
         self.success = None
 
     def reset(self, agent=None):
-        self.scanned_ips = set()
+        self.red_info = {}
+        self.known_subnets = set()
         self.step_counter = -1
+        self.id_tracker = -1
+        self.success = None
         result = self.env.reset(agent)
         if agent =='Red':
             obs = self.observation_change(result.observation)
