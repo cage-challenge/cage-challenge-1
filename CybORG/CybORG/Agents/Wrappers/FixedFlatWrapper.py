@@ -141,6 +141,8 @@ class FixedFlatWrapper(BaseWrapper):
         for key_name, host in numeric_obs.items():
             if key_name == 'success':
                 flat_obs.append(float(host.value)/3)
+            elif not isinstance(host, dict):
+                raise ValueError('Host data must be a dict')
             else:
                 flat_obs += self.observation_structure.flatten(host, self.cache)
 
