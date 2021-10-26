@@ -10,10 +10,10 @@ from CybORG.Shared.Enums import OperatingSystemType, SessionType, ProcessName, P
 
 import inspect, random
 
-
 class FixedFlatWrapper(BaseWrapper):
     def __init__(self, env: BaseWrapper=None, agent=None):
         super().__init__(env, agent)
+
         self.MAX_HOSTS = 5
         self.MAX_PROCESSES = 100
         self.MAX_CONNECTIONS = 2
@@ -24,15 +24,81 @@ class FixedFlatWrapper(BaseWrapper):
         self.MAX_USERS = 10
         self.MAX_GROUPS = 10
         self.MAX_PATCHES = 10
-        self.hostname = {}
-        self.username = {}
-        self.group_name = {}
-        self.process_name = {}
-        self.interface_name = {}
-        self.path = {}
-        self.password = {}
-        self.password_hash = {}
-        self.file = {}
+
+        self.observation_structure = Object(None, 1, [
+            Object('System info', 1, [
+                String('Hostname', self.MAX_HOSTS),
+                Enum('OSType', OperatingSystemType),
+                Enum('OSDistribution', OperatingSystemDistribution),
+                Enum('OSVersion', OperatingSystemVersion),
+                Enum('OSKernelVersion', OperatingSystemKernelVersion),
+                Enum('Architecture', Architecture),
+                Time('Local Time'),
+                EnumArray('os_patches', OperatingSystemPatch, self.MAX_PATCHES)
+            ]),
+            Object('Processes', self.MAX_PROCESSES, [
+                Float('PID', 32768),
+                Float('PPID', 32768),
+                String('Process Name'),
+                String('Username'),
+                String('Path'),
+                Enum('Known Process', ProcessName),
+                Enum('Known Path', Path),
+                Enum('Process Type', ProcessType),
+                Enum('Process Version', ProcessVersion),
+                Object('Connections', self.MAX_CONNECTIONS, [
+                    Float('local_port', 65535),
+                    Float('remote_port', 65535),
+                    Float('local_address', 4294967296),
+                    Float('Remote Address', 4294967296),
+                    Enum('Application Protocol', AppProtocol),
+                    Enum('Status', ProcessState)
+                ]),
+                EnumArray('Vulnerability', Vulnerability, self.MAX_VULNERABILITIES)
+            ]),
+            Object('Files', self.MAX_FILES, [
+                String('Path'),
+                Enum('Known Path', Path),
+                String('File Name'),
+                Enum('Known File', FileType),
+                Enum('Type', FileType),
+                Enum('Vendor', Vendor),
+                Enum('Version', FileVersion),
+                String('Username'),
+                String('Group Name'),
+                Time('Last Modified Time'),
+                Float('User Permissions', 7),
+                Float('Group Permissions', 7),
+                Float('Default Permissions', 7)
+            ]),
+            Object('Users', self.MAX_USERS, [
+                String('Username'),
+                String('Password'),
+                String('Password Hash'),
+                Enum('Password Hash Type', PasswordHashType),
+                Float('UID'),
+                Float('Logged In'),
+                Object('Groups', self.MAX_GROUPS, [
+                    Enum('Builtin Group', BuiltInGroups),
+                    String('Group Name'),
+                    Float('GID')
+                ])
+            ]),
+            Object('Sessions', self.MAX_SESSIONS, [
+                String('Username'),
+                Enum('Type', SessionType),
+                Float('ID', 20),
+                Float('Timeout'),
+                Float('PID', 32768)
+            ]),
+            Object('Interface', self.MAX_INTERFACES, [
+                String('Interface Name'),
+                Subnet('Subnet'),
+                Float('IP Address', 4294967296)
+            ])
+        ])
+
+        self.cache = {}
 
     def get_action(self, observation, action_space):
 
@@ -70,524 +136,13 @@ class FixedFlatWrapper(BaseWrapper):
 
         while len(numeric_obs) > self.MAX_HOSTS:
             numeric_obs.popitem()
-            # raise ValueError("Too many hosts in observation for fixed size")
+            #raise ValueError("Too many hosts in observation for fixed size")
 
         for key_name, host in numeric_obs.items():
             if key_name == 'success':
                 flat_obs.append(float(host.value)/3)
-            elif not isinstance(host, dict):
-                raise ValueError('Host data must be a dict')
             else:
-                if 'System info' in host:
-                    if "Hostname" in host["System info"]:
-                        element = host["System info"]["Hostname"]
-                        if element not in self.hostname:
-                            self.hostname[element] = len(self.hostname)
-                        element = self.hostname[element]/self.MAX_HOSTS
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-                    if "OSType" in host["System info"]:
-                        if host["System info"]["OSType"] != -1:
-                            element = host["System info"]["OSType"].value/len(OperatingSystemType.__members__)
-                        else:
-                            element = -1
-                        
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "OSDistribution" in host["System info"]:
-                        if host["System info"]["OSDistribution"] != -1:
-                            element = host["System info"]["OSDistribution"].value / len(OperatingSystemDistribution.__members__)
-                        else:
-                            element = -1
-                        
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "OSVersion" in host["System info"]:
-                        if host["System info"]["OSVersion"] != -1:
-                            element = host["System info"]["OSVersion"].value / len(OperatingSystemVersion.__members__)
-                        else:
-                            element = -1
-                        
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "OSKernelVersion" in host["System info"]:
-                        if host["System info"]["OSKernelVersion"] != -1:
-                            element = host["System info"]["OSKernelVersion"].value / len(OperatingSystemKernelVersion.__members__)
-                        else:
-                            element = -1
-                        
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "Architecture" in host["System info"]:
-                        if host["System info"]["Architecture"] != -1:
-                            element = host["System info"]["Architecture"].value / len(Architecture.__members__)
-                        else:
-                            element = -1
-                        
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if 'Local Time' in host["System info"]:
-                        element = (host["System info"]['Local Time'] - datetime(2020, 1, 1)).total_seconds()
-                        
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "os_patches" not in host["System info"]:
-                        host["System info"]["os_patches"] = []
-
-                    while len(host["System info"]["os_patches"]) < self.MAX_PATCHES:
-                        host["System info"]["os_patches"].append(-1.0)
-                    if len(host["System info"]["os_patches"]) > self.MAX_PATCHES:
-                        raise ValueError("Too many processes in observation for fixed size")
-                    for patch_idx, patch in enumerate(host["System info"]["os_patches"]):
-                        if patch != -1:
-                            element = patch.value / len(OperatingSystemPatch.__members__)
-                        else:
-                            element = patch
-                        
-                        flat_obs.append(float(element))
-                else:
-                    flat_obs.append(-1.0)
-                    flat_obs.append(-1.0)
-                    flat_obs.append(-1.0)
-                    flat_obs.append(-1.0)
-                    flat_obs.append(-1.0)
-                    flat_obs.append(-1.0)
-                    flat_obs.append(-1.0)
-                    for num_patches in range(self.MAX_PATCHES):
-                        flat_obs.append(-1.0)
-
-                if 'Processes' not in host:
-                    host["Processes"] = []
-                while len(host["Processes"]) < self.MAX_PROCESSES:
-                    host["Processes"].append({})
-                while len(host["Processes"]) > self.MAX_PROCESSES:
-                    host["Processes"].pop()
-                    # raise ValueError("Too many processes in observation for fixed size")
-
-                for proc_idx, process in enumerate(host['Processes']):
-                    if "PID" in process:
-                        flat_obs.append(float(process["PID"])/32768)
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "PPID" in process:
-                        flat_obs.append(float(process["PPID"])/32768)
-                    else:
-                            flat_obs.append(-1.0)
-
-                    if "Process Name" in process:
-                        element = process["Process Name"]
-                        if element not in self.process_name:
-                            self.process_name[element] = len(self.process_name)
-                        element = self.process_name[element]
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "Username" in process:
-                        element = process["Username"]
-                        if element not in self.username:
-                            self.username[element] = len(self.username)
-                        element = self.username[element]
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "Path" in process:
-                        element = process["Path"]
-                        if element not in self.path:
-                            self.path[element] = len(self.path)
-                        element = self.path[element]
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "Known Process" in process:
-                        if process["Known Process"] != -1:
-                            element = process["Known Process"].value / len(ProcessName.__members__)
-                        else:
-                            element = -1.0
-                        
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "Known Path" in process:
-                        if process["Known Path"] != -1:
-                            element = process["Known Path"].value / len(Path.__members__)
-                        else:
-                            element = -1.0
-                        
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "Process Type" in process:
-                        if process["Process Type"] != -1:
-                            element = process["Process Type"].value / len(ProcessType.__members__)
-                        else:
-                            element = -1.0
-                        
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "Process Version" in process:
-                        if process["Process Version"] != -1:
-                            element = process["Process Version"].value / len(ProcessVersion.__members__)
-                        else:
-                            element = -1.0
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "Connections" not in process:
-                        process["Connections"] = []
-                    while len(process["Connections"]) < self.MAX_CONNECTIONS:
-                        process["Connections"].append({})
-
-                    for conn_idx, connection in enumerate(process["Connections"]):
-                        if "local_port" in connection:
-                            flat_obs.append(float(connection["local_port"])/65535)
-                        else:
-                            flat_obs.append(-1.0)
-
-                        if "remote_port" in connection:
-                            flat_obs.append(float(connection["remote_port"])/65535)
-                        else:
-                            flat_obs.append(-1.0)
-
-                        if "local_address" in connection:
-                            element = int(connection["local_address"])
-                            flat_obs.append(float(element)/4294967296)
-                        else:
-                            flat_obs.append(-1.0)
-
-                        if "Remote Address" in connection:
-                            element = int(connection["Remote Address"])
-                            flat_obs.append(float(element)/4294967296)
-                        else:
-                            flat_obs.append(-1.0)
-
-                        if "Application Protocol" in connection:
-                            if connection["Application Protocol"] != -1:
-                                element = connection["Application Protocol"].value / len(AppProtocol.__members__)
-                            else:
-                                element = -1.0
-                            flat_obs.append(float(element))
-                        else:
-                            flat_obs.append(-1.0)
-
-                        if "Status" in connection:
-                            if connection["Status"] != -1:
-                                element = connection["Status"].value / len(ProcessState.__members__)
-                            else:
-                                element = -1.0
-                            flat_obs.append(float(element))
-                        else:
-                                flat_obs.append(-1.0)
-
-                    if "Vulnerability" in process:
-                        for idx, element in enumerate(process["Vulnerability"]):
-                            if element != -1:
-                                element = element.value / len(Vulnerability.__members__)
-                            flat_obs.append(float(element))
-                    else:
-                        for idx in range(self.MAX_VULNERABILITIES):
-                            flat_obs.append(-1.0)
-
-                if "Files" not in host:
-                    host["Files"] = []
-                while len(host["Files"]) < self.MAX_FILES:
-                    host["Files"].append({})
-                while len(host["Files"]) > self.MAX_FILES:
-                    host["Files"].pop()
-                    # raise ValueError("Too many files in observation for fixed size")
-
-                for file_idx, file in enumerate(host['Files']):
-                    if "Path" in file:
-                        element = file["Path"]
-                        if element not in self.path:
-                            self.path[element] = len(self.path)
-                        element = self.path[element]
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "Known Path" in file:
-                        if file["Known Path"] != -1:
-                            element = file["Known Path"].value / len(Path.__members__)
-                        else:
-                            element = -1.0
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "File Name" in file:
-                        element = file["File Name"]
-                        if element not in self.file:
-                            self.file[element] = len(self.file)
-                        element = self.file[element]
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "Known File" in file:
-                        if file["Known File"] != -1:
-                            element = file["Known File"].value / len(FileType.__members__)
-                        else:
-                            element = -1.0
-                        flat_obs.append(float(element))
-                    else:
-                            flat_obs.append(-1.0)
-
-                    if "Type" in file:
-                        if file["Type"] != -1:
-                            element = file["Type"].value / len(FileType.__members__)
-                        else:
-                            element = -1.0
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "Vendor" in file:
-                        if file["Vendor"] != -1:
-                            element = file["Vendor"].value / len(Vendor.__members__)
-                        else:
-                            element = -1.0
-                        
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "Version" in file:
-                        if file["Version"] != -1:
-                            element = file["Version"].value / len(FileVersion.__members__)
-                        else:
-                            element = -1.0
-                        
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "Username" in file:
-                        element = file["Username"]
-                        if element not in self.username:
-                            self.username[element] = len(self.username)
-                        element = self.username[element]
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "Group Name" in file:
-                        element = file["Group Name"]
-                        if element not in self.group_name:
-                            self.group_name[element] = len(self.group_name)
-                        element = self.group_name[element]
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "Last Modified Time" in file:
-                        #TODO work out how to normalise this value
-                        element = -1 #(file["Last Modified Time"] - datetime(2020, 1, 1)).total_seconds()
-                        
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "User Permissions" in file:
-                        element = file["User Permissions"]
-                        flat_obs.append(float(element)/7)
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "Group Permissions" in file:
-                        element = file["Group Permissions"]
-                        flat_obs.append(float(element)/7)
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "Default Permissions" in file:
-                        element = file["Default Permissions"]
-                        flat_obs.append(float(element)/7)
-                    else:
-                        flat_obs.append(-1.0)
-
-                if "Users" not in host:
-                    host["Users"] = []
-                while len(host["Users"]) < self.MAX_USERS:
-                    host["Users"].append({})
-                while len(host["Users"]) > self.MAX_USERS:
-                    host["Users"].pop()
-                    # raise ValueError("Too many users in observation for fixed size")
-
-                for user_idx, user in enumerate(host['Users']):
-                    if "Username" in user:
-                        element = user["Username"]
-                        if element not in self.username:
-                            self.username[element] = len(self.username)
-                        element = self.username[element]
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "Password" in user:
-                        element = user["Password"]
-                        if element not in self.password:
-                            self.password[element] = len(self.password)
-                        element = self.password[element]
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "Password Hash" in user:
-                        element = user["Password Hash"]
-                        if element not in self.password_hash:
-                            self.password_hash[element] = len(self.password_hash)
-                        element = self.password_hash[element]
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "Password Hash Type" in user:
-                        if user["Password Hash Type"] != -1:
-                            element = user["Password Hash Type"].value / len(PasswordHashType.__members__)
-                        else:
-                            element = -1.0
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "UID" in user:
-                        flat_obs.append(float(user["UID"]))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "Logged in" in user:
-                        flat_obs.append(float(user["Logged in"]))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "Groups" not in user:
-                        user["Groups"] = []
-                    while len(user["Groups"]) < self.MAX_GROUPS:
-                        user["Groups"].append({})
-                    while len(user['Groups']) > self.MAX_GROUPS:
-                        user['Groups'].pop()
-                        # raise ValueError("Too many groups in observation for fixed size")
-                    for group_idx, group in enumerate(user["Groups"]):
-                        if 'Builtin Group' in group:
-                            if group["Builtin Group"] != -1:  # TODO test if this is ever not true
-                                element = group["Builtin Group"].value / len(BuiltInGroups.__members__)
-                            else:
-                                element = -1.0
-                            flat_obs.append(float(element))
-                        else:
-                            flat_obs.append(-1.0)
-
-                        if "Group Name" in group:
-                            element = user["Group Name"]
-                            if element not in self.group_name:
-                                self.group_name[element] = len(self.group_name)
-                            element = self.group_name[element]
-                            flat_obs.append(float(element))
-                        else:
-                            flat_obs.append(-1.0)
-
-                        if "GID" in group:
-                            flat_obs.append(float(group["GID"]))
-                        else:
-                            flat_obs.append(-1.0)
-
-                if "Sessions" not in host:
-                    host["Sessions"] = []
-                while len(host["Sessions"]) < self.MAX_SESSIONS:
-                    host["Sessions"].append({})
-                while len(host["Sessions"]) > self.MAX_SESSIONS:
-                    host["Sessions"].pop()
-                    # raise ValueError("Too many sessions in observation for fixed size")
-
-                for session_idx, session in enumerate(host['Sessions']):
-                    if "Username" in session:
-                        element = session["Username"]
-                        if element not in self.username:
-                            self.username[element] = len(self.username)
-                        element = self.username[element]
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "Type" in session:
-                        if session["Type"] != -1:
-                            element = session["Type"].value/len(SessionType.__members__)
-                        else:
-                            element = -1.0
-                        flat_obs.append(float(element))
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "ID" in session:
-                        flat_obs.append(float(session["ID"])/20)
-                    else:
-                        flat_obs.append(-1.0)
-
-                    if "Timeout" in session:
-                        flat_obs.append(float(session["Timeout"]))
-                    else:
-                         flat_obs.append(-1.0)
-
-                    if "PID" in session:
-                        flat_obs.append(float(session["PID"])/32768)
-                    else:
-                        flat_obs.append(-1.0)
-
-                if 'Interface' not in host:
-                    host["Interface"] = []
-                while len(host["Interface"]) < self.MAX_INTERFACES:
-                    host["Interface"].append({})
-                while len(host["Interface"]) > self.MAX_INTERFACES:
-                    host["Interface"].pop()
-                    # raise ValueError("Too many interfaces in observation for fixed size")
-
-                if 'Interface' in host:
-                    for interface_idx, interface in enumerate(host['Interface']):
-                        if "Interface Name" in interface:
-                            element = interface["Interface Name"]
-                            if element not in self.interface_name:
-                                self.interface_name[element] = len(self.interface_name)
-                            element = self.interface_name[element]
-                            flat_obs.append(float(
-                                    element))
-                        else:
-                             flat_obs.append(-1.0)
-
-                        if "Subnet" in interface:
-                            element = interface["Subnet"]
-                            flat_obs.append(float(int(element.network_address))/4294967296)
-                            flat_obs.append(float(int(element.prefixlen))/4294967296)
-                        else:
-                             flat_obs.append(-1.0)
-                             flat_obs.append(-1.0)
-
-                        if "IP Address" in interface:
-                            element = int(interface["IP Address"])
-                            flat_obs.append(float(element)/4294967296)
-                        else:
-                             flat_obs.append(-1.0)
+                flat_obs += self.observation_structure.flatten(host, self.cache)
 
         return flat_obs
 
@@ -597,3 +152,155 @@ class FixedFlatWrapper(BaseWrapper):
     def get_observation(self, agent: str):
         obs = self.get_attr('get_observation')(agent)
         return self.observation_change(obs)
+
+## BEGIN PRIVATE DATA CLASSES ##
+
+class Data:
+    def __init__(self, key):
+        self.key = key
+
+    def flatten(self, data, cache):
+        try:
+            return self._flatten(data, cache)
+        except Exception as e:
+            raise Exception(f'Exception flattening {self.key}') from e
+
+    def _flatten(self, data, cache):
+        raise NotImplementedError
+
+    def fill(self, elements, size, default):
+        while len(elements) > size:
+            elements.pop()
+            #raise ValueError(f"Too many {self.key} elements in observation for fixed size of {size}")
+
+        while len(elements) < size:
+            elements.append(default)
+
+        return elements
+
+class Object(Data):
+    def __init__(self, key, count, attrs):
+        super().__init__(key)
+        self.count = count
+        self.attrs = attrs
+
+    def _flatten(self, data, cache):
+        # Root dictionary has no key
+        if self.key:
+            if self.key not in data:
+                data[self.key] = {} if self.count == 1 else []
+
+            if 1 < self.count:
+                data[self.key] = self.fill(data[self.key], self.count, {})
+
+            data = data[self.key]
+
+        # This is to allow for all cases to be handled in the for loop
+        if self.count == 1:
+            data = [data]
+
+        flat_obj = []
+        for item in data:
+            for attr in self.attrs:
+                flattened = attr.flatten(item, cache)
+                if isinstance(flattened, list):
+                    flat_obj += flattened
+                else:
+                    flat_obj.append(flattened)
+        return flat_obj
+
+    def _flatten_attrs(self, data, cache, attrs):
+        flat_attrs = []
+
+        return flat_attrs
+
+class String(Data):
+    def __init__(self, key, divisor = None):
+        super().__init__(key)
+        self.divisor = 1.0 if divisor is None else divisor
+
+    def _flatten(self, data, cache):
+        if self.key not in data:
+            return -1.0
+
+        if self.key not in cache:
+            cache[self.key] = {}
+
+        _cache = cache[self.key]
+        element = data[self.key]
+
+        if element not in _cache:
+            _cache[element] = len(_cache)
+
+        value = _cache[element]
+
+        return (float(value) / self.divisor)
+
+class Float(Data):
+    def __init__(self, key, divisor = 1.0):
+        super().__init__(key)
+        self.divisor = divisor
+
+    def _flatten(self, data, cache):
+        if self.key not in data:
+            return -1.0
+        return (float(int(data[self.key])) / self.divisor)
+
+class Enum(Data):
+    def __init__(self, key, enum):
+        super().__init__(key)
+        self.enum = enum
+        self.divisor = len(enum.__members__)
+
+    def _flatten(self, data, cache):
+        if self.key not in data:
+            return -1.0
+
+        element = data[self.key]
+        if element != -1:
+            element = element.value / self.divisor
+
+        return float(element)
+
+class EnumArray(Enum):
+    def __init__(self, key, enum, size):
+        super().__init__(key, enum)
+        self.size = size
+
+    def _flatten(self, data, cache):
+        if self.key not in data:
+            return [ -1.0 for _ in range(self.size) ]
+
+        elements = self.fill(data[self.key], self.size, -1.0)
+
+        flat_data = []
+        for element in elements:
+            if element != -1:
+                element = element.value / self.divisor
+            flat_data.append(float(element))
+        return flat_data
+
+class Time(Data):
+    def __init__(self, key, reference_datetime = None):
+        super().__init__(key)
+
+        if reference_datetime is None:
+            self.reference = datetime(2020, 1, 1)
+        else:
+            self.reference = reference_datetime
+
+    def _flatten(self, data, cache):
+        if self.key not in data:
+            return -1.0
+        return float((data[self.key] - self.reference).total_seconds())
+
+class Subnet(Data):
+    def __init__(self, key):
+        super().__init__(key)
+
+    def _flatten(self, data, cache):
+        if self.key not in data:
+            return [ -1.0, -1.0 ]
+        subnet = data[self.key]
+        return [ float(int(subnet.network_address))/4294967296,
+                 float(int(subnet.prefixlen))/4294967296 ]
