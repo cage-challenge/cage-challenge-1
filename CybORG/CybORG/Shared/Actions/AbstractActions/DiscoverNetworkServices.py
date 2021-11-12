@@ -25,10 +25,11 @@ class DiscoverNetworkServices(Action):
         sub_action = Portscan(session=self.session, agent=self.agent, ip_address=self.ip_address, target_session=session)
         obs = sub_action.sim_execute(state)
 
-        for proc in obs.data[str(self.ip_address)]["Processes"]:
-            for conn in proc['Connections']:
-                port = conn["local_port"]
-                state.sessions[self.agent][self.session].addport(self.ip_address, port)
+        if str(self.ip_address) in obs.data:
+            for proc in obs.data[str(self.ip_address)]["Processes"]:
+                for conn in proc['Connections']:
+                    port = conn["local_port"]
+                    state.sessions[self.agent][self.session].addport(self.ip_address, port)
 
         return obs
 
