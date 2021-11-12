@@ -100,8 +100,8 @@ class BlueTableWrapper(BaseWrapper):
                     self.blue_info[hostname][-1] = 'Unknown'
 
     def _detect_anomalies(self,obs):
-	    if self.baseline is None:
-		    raise TypeError('BlueTableWrapper was unable to establish baseline. This usually means the environment was not reset before calling the step method.')
+        if self.baseline is None:
+            raise TypeError('BlueTableWrapper was unable to establish baseline. This usually means the environment was not reset before calling the step method.')
 
         anomaly_dict = {}
 
