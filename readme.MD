@@ -1,5 +1,5 @@
 # CAGE Challenge 1
-![Banner](/images/robot.png)
+![Banner](/images/CAGE-Logo-small.png)
 
 Recent advances in artificial intelligence \(AI\) technologies show promise for autonomous cyber operations \(ACO\), offering the potential for distributed, adaptive defensive measures at machine speed and scale\. The cyber domain is a particularly challenging domain for autonomous AI\. We nominate a challenge in this space which we believe requires further research in order to enable ACO to become an operational capability\. To facilitate this AI research, we are releasing CybORG, an experimental platform using the OpenAI Gym interface together with a cyber security scenario and a challenge to which we invite researchers to respond\. 
 
