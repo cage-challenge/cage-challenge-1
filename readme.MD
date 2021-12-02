@@ -68,8 +68,8 @@ The blue agent receives a negative reward any time the red agent gets administra
 
 | Agent    | Hosts              | Action   | Blue Reward \(per turn\) |
 |:--------:|:------------------:|:--------:|:------------------------:|
-| Red      | Operational Server | \-10
-| Blue     | Any                | \-1
+| Red      | Operational Server | Impact   | \-10
+| Blue     | Any                | Restore  | \-1
 
 # Challenge Extension
 
@@ -95,7 +95,7 @@ The CAGE challenge is written in Python\. Dependencies can be installed using pi
 
 Successful blue agents and any queries re the challenge can be submitted via email to: cage\.aco\.challenge@gmail\.com
 
-When submitting a blue agent, it should be for the extended version of the challenge, and teams should include:
+When submitting a blue agent it should be for the extended version of the challenge, and teams should include:
 
 - A team name and contact details\.
 - The code implementing the agent, with a list of dependencies\.
@@ -148,10 +148,10 @@ A leader board for submissions will be maintained until February 2022\. Final re
 
 The evaluation.py file is designed to provide a standardised evaluation for comparison that incorporates multiple different trial lengths and red agents\. These are:
 
-- Trial Length: 30, 50 and 100
+- Trial Length: 30, 50, 100
 - Red Agents: Meander \(explore randomly\), Beeline \(move directly to the operational server\), No Action
 
-For each combination of trial length and red agent, CybORG is run for 10 episodes and the total rewards received by the blue agent is recorded for each episode\. The mean and standard deviation for each set of episodes are recorded in the evaluation file\.
+For each combination of trial length and red agent, CybORG is run for 10 episodes and the total reward received by the blue agent is recorded for each episode\. The mean and standard deviation for each set of episodes are recorded in the evaluation file\.
 
 ## Important dates
 
@@ -183,14 +183,14 @@ The CAGE team will continue to develop this platform and plan to announce a new 
 |:-----------|:-----------------------------------------|:-------------------------------------------------|:---------------------------------------|
 | Discover Remote Systems | ATT&CK[^4] Technique T1018 Remote System Discovery\. Discovers new hosts/IP addresses in the network through active scanning using tools such as ping\. | Subnet | IP addresses in the chosen subnet from hosts that respond to ping |
 | Discover Network Services | ATT&CK Technique T1046 Network Service Scanning. Discovers responsive services on a selected host by initiating a connection with that host\. | Subnet | Ports and service information |
-| Exploit Network Services | ATT&CK Technique T1210 Exploitation of Remote Services\. This action attempts to exploit services on a remote system\. | IP Address | Success/Failure | Initial recon of host if successful | Information on why failed \(unavailable port, etc\.\) |
-| Escalate | ATT&CK Tactic TA0004 Privilege Escalation\. This action escalates the agent’s privilege on the host\. | Hostname | Success/Failure | Internal information now available due to increased access to the host |
+| Exploit Network Services | ATT&CK Technique T1210 Exploitation of Remote Services\. This action attempts to exploit services on a remote system\. | IP Address | Success/Failure <br /> Initial recon of host if successful <br /> Information on why failed \(unavailable port, etc\.\) |
+| Escalate | ATT&CK Tactic TA0004 Privilege Escalation\. This action escalates the agent’s privilege on the host\. | Hostname | Success/Failure <p> Internal information now available due to increased access to the host |
 | Impact | ATT&CK Technique T1489 Service Stop\. This action disrupts the performance of the network and fulfils red’s objective of denying the operational service\. | Hostname | Success/Failure  |
 
 
-[^3]: Open Command and Control \(OpenC2\): [https://openc2\.org/](https://openc2\.org/)
+[^3]: Open Command and Control \(OpenC2\), [https://openc2\.org/](https://openc2\.org/)
 
-[^4]: MITRE ATT&CK: [https://attack\.mitre\.org/](https://attack\.mitre\.org/)
+[^4]: MITRE ATT&CK, [https://attack\.mitre\.org/](https://attack\.mitre\.org/)
 
 
 
