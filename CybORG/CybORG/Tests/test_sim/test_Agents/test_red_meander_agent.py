@@ -118,6 +118,7 @@ def test_meander_vs_react_restore_agent_step():
         else:
             assert result.observation['success'] == True, f'Unsuccessful action {result.action} for step {i}'
 
+@pytest.mark.skip()
 def test_meander_resilience():
     path = str(inspect.getfile(CybORG))
     path = path[:-10] + '/Shared/Scenarios/Scenario1b.yaml'

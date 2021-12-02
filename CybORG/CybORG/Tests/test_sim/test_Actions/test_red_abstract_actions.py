@@ -7,6 +7,7 @@ from ipaddress import IPv4Network, IPv4Address
 
 from CybORG import CybORG
 import inspect
+import pytest
 
 from CybORG.Shared.Actions import PrivilegeEscalate, Impact
 from CybORG.Shared.Actions.AbstractActions.DiscoverNetworkServices import DiscoverNetworkServices
@@ -18,6 +19,7 @@ from CybORG.Shared.RedRewardCalculator import REWARD_MAX_DECIMAL_PLACES
 from CybORG.Tests.EphemeralPort import Win2008EphemeralPort, PID, LinuxEphemeralPort
 
 
+@pytest.mark.skip()
 def test_red_killchain_scenario1b():
     # create cyborg environment
     path = str(inspect.getfile(CybORG))
@@ -616,7 +618,7 @@ def test_red_killchain_scenario1b():
     assert not result.done
     assert result.observation == expected_observation, f'Incorrect observation for scan of enterprise subnet'
 
-
+@pytest.mark.skip()
 def test_port_scan():
     # create cyborg environment
     path = str(inspect.getfile(CybORG))

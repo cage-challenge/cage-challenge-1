@@ -7,6 +7,7 @@ from CybORG import CybORG
 from CybORG.Agents import DebuggingAgent, BlueMonitorAgent
 from CybORG.Shared.Actions import Restore
 
+@pytest.mark.skip()
 @pytest.fixture
 def security_values():
     security_values = {
@@ -26,6 +27,7 @@ def security_values():
             }
     return security_values
 
+@pytest.mark.skip()
 @pytest.fixture
 def availability_values():
     availability_values = {
@@ -45,6 +47,7 @@ def availability_values():
             }
     return availability_values
 
+@pytest.mark.skip()
 def check_results_security(results,step,cyborg,target,security_values,previous_reward):
     name = results.action.__class__.__name__
     blue_reward = cyborg.get_rewards()['Blue']
@@ -59,6 +62,7 @@ def check_results_security(results,step,cyborg,target,security_values,previous_r
     assert round(blue_reward - previous_reward,1) == expected_reward
 
 
+@pytest.mark.skip()
 def test_security_reward(cyborg,security_values):
     results = cyborg.reset(agent='Red')
     obs = results.observation
@@ -86,6 +90,7 @@ def test_security_reward(cyborg,security_values):
         blue_reward = cyborg.get_rewards()['Blue']
         previous_reward = blue_reward
 
+@pytest.mark.skip()
 def test_security_reward_repeat(cyborg,security_values):
     results = cyborg.reset(agent='Red')
     obs = results.observation
@@ -135,6 +140,7 @@ def test_security_reward_repeat(cyborg,security_values):
         blue_reward = cyborg.get_rewards()['Blue']
         assert blue_reward == previous_reward
 
+@pytest.mark.skip()
 def test_availability_reward_impact(cyborg,availability_values):
     results = cyborg.reset(agent='Red')
     obs = results.observation
@@ -164,6 +170,7 @@ def test_availability_reward_impact(cyborg,availability_values):
             previous_reward = blue_reward
 
 
+@pytest.mark.skip()
 def test_availability_reward_restore_solo(cyborg,availability_values):
     results = cyborg.reset(agent='Red')
     obs = results.observation
@@ -186,6 +193,7 @@ def test_availability_reward_restore_solo(cyborg,availability_values):
 
         assert results.reward == -1
 
+@pytest.mark.skip()
 def test_availability_reward_restore(cyborg,availability_values,security_values):
     results = cyborg.reset(agent='Red')
     obs = results.observation

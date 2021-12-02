@@ -10,6 +10,7 @@ from CybORG.Tests.EphemeralPort import LinuxEphemeralPort, Win2008EphemeralPort,
 import pytest
 
 
+@pytest.mark.skip()
 @pytest.mark.parametrize("seed", [1])
 def test_react_blue_agent(seed):
     # create cyborg environment

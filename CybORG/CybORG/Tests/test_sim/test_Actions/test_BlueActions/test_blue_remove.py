@@ -16,6 +16,7 @@ from CybORG.Tests.EphemeralPort import PID
 from CybORG.Tests.test_sim.test_Acceptance.test_reward_function import security_values
 
 @pytest.mark.parametrize("seed", [1, 22447, 3242, 4])
+@pytest.mark.skip()
 def test_blue_remove_killchain_sim_expected_output(seed, security_values):
     # Setup Cyborg
     path = str(inspect.getfile(CybORG))

@@ -12,6 +12,7 @@ from CybORG.Shared.Actions import Restore
 import pytest
 
 
+@pytest.mark.skip()
 def test_blineagent_step():
     path = str(inspect.getfile(CybORG))
     path = path[:-10] + f'/Shared/Scenarios/Scenario1b.yaml'
@@ -60,6 +61,7 @@ def test_blineagent_step():
         assert result.reward == round(reward, 1), f'error for step {1} action {result.action}'
 
 
+@pytest.mark.skip()
 def test_bline_agent_blue_interruptions():
     path = str(inspect.getfile(CybORG))
     path = path[:-10] + f'/Shared/Scenarios/Scenario1b.yaml'
@@ -93,6 +95,7 @@ def test_bline_agent_blue_interruptions():
             assert blue_result.observation['success'] == TrinaryEnum.TRUE, f'Step: {i}, Action: {blue_result.action}'
 
 
+@pytest.mark.skip()
 @pytest.mark.parametrize('blue_agent', [BlueReactRemoveAgent, BlueReactRestoreAgent, SleepAgent])
 def test_bline_vs_blue_agent_start(blue_agent):
     path = str(inspect.getfile(CybORG))
@@ -103,6 +106,7 @@ def test_bline_vs_blue_agent_start(blue_agent):
     cyborg.start(100)
 
 
+@pytest.mark.skip()
 def test_blineagent_vs_react_remove_agent_step():
     path = str(inspect.getfile(CybORG))
     path = path[:-10] + f'/Shared/Scenarios/Scenario1b.yaml'
@@ -117,6 +121,7 @@ def test_blineagent_vs_react_remove_agent_step():
             assert result.observation['success'] == True, f'Unsuccessful action {result.action} for step {i}'
 
 
+@pytest.mark.skip()
 def test_blineagent_vs_react_restore_agent_step():
     path = str(inspect.getfile(CybORG))
     path = path[:-10] + f'/Shared/Scenarios/Scenario1b.yaml'
@@ -162,6 +167,7 @@ def test_bline_resilience():
             assert success == True, f'failing on step {i}'
 
 
+@pytest.mark.skip()
 def test_bline_reset():
     path = str(inspect.getfile(CybORG))
     path = path[:-10] + f'/Shared/Scenarios/Scenario1b.yaml'

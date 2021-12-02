@@ -15,7 +15,7 @@ from CybORG.Tests.test_sim.test_Acceptance.test_reward_function import security_
 import pytest
 from CybORG.Agents import B_lineAgent
 
-
+@pytest.mark.skip()
 def test_blue_analyse_on_red_killchain(security_values,availability_values):
     # create cyborg environment
     path = str(inspect.getfile(CybORG))
