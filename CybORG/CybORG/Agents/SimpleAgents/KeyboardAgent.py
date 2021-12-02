@@ -88,7 +88,7 @@ class KeyboardAgent(BaseAgent):
                 except:
                     print('Choose a number in range.....')
             else:
-                options_lower = [x.lower() for x in options]
+                options_lower = [str(x).lower() for x in options]
                 try:
                     index = options_lower.index(user_input.lower())
                     choice = options[index]

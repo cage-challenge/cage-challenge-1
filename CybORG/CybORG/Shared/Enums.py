@@ -691,3 +691,12 @@ class QueryType(enum.Enum):
             return cls.SYNC
         elif query_string.lower() == "async":
             return cls.ASYNC
+
+## The following code contains work of the United States Government and is not subject to domestic copyright protection under 17 USC § 105.
+## Additionally, we waive copyright and related rights in the utilized code worldwide through the CC0 1.0 Universal public domain dedication.
+
+class DecoyType(enum.Flag):
+    NONE = 0
+    ESCALATE = enum.auto()
+    EXPLOIT = enum.auto()
+    SANDBOXING_EXPLOIT = enum.auto()

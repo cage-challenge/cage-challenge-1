@@ -1,8 +1,10 @@
-# Copyright DST Group. Licensed under the MIT license.
+## The following code contains work of the United States Government and is not subject to domestic copyright protection under 17 USC § 105.
+## Additionally, we waive copyright and related rights in the utilized code worldwide through the CC0 1.0 Universal public domain dedication.
+
 import pprint
 from copy import deepcopy
 from datetime import datetime
-from typing import List, Union
+from typing import List, Union, Optional
 from ipaddress import IPv4Network, IPv4Address
 
 import CybORG.Shared.Enums as CyEnums
@@ -42,6 +44,7 @@ class Observation:
                     process_type: str = None,
                     process_version: str = None,
                     vulnerability: str = None,
+                    properties: Optional[List[str]] = None,
                     **kwargs):
         if hostid is None:
             hostid = str(len(self.data))
@@ -169,6 +172,11 @@ class Observation:
             if type(process_version) is str:
                 process_version = CyEnums.ProcessVersion.parse_string(process_version)
             new_process["Process Version"] = process_version
+
+        if properties is None:
+            properties = kwargs.get("Properties", None)
+        if properties is not None:
+            new_process["Properties"] = properties
 
         if vulnerability is None:
             vulnerability = kwargs.get("Vulnerability", None)

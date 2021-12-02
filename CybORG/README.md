@@ -96,7 +96,7 @@ For further guidance on the CybORG environment please refer to the [tutorial not
 ```
 @misc{cage_challenge_1,
   Title = {Cyber Autonomy Gym for Experimentation Challenge 1},
-  Note = {Created by Maxwell Standen, David Bowman, Son Hoang, Toby Richer, Martin Lucas},
+  Note = {Created by Maxwell Standen, David Bowman, Son Hoang, Toby Richer, Martin Lucas, Richard Van Tassel},
   Publisher = {GitHub},
   Howpublished = {\url{https://github.com/cage-challenge/cage-challenge-1}},
   Year = {2021},

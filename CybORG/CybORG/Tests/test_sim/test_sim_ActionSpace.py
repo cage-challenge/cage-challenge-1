@@ -197,8 +197,8 @@ def test_update_action_space_from_observation_session(create_sim_action_space):
 
 def test_action_space_scenario1_sized(create_cyborg_sim):
     cyborg, scenario = create_cyborg_sim
-    # if scenario == 'Scenario1':
-    #     pytest.skip('Scenario1 has an expanding number of ports due to observation of ephemeral ports')
+    if scenario == 'Scenario1':
+        pytest.skip('Scenario1 has an expanding number of ports due to observation of ephemeral ports')
     cyborg = EnumActionWrapper(ReduceActionSpaceWrapper(cyborg))
     action_space = cyborg.get_action_space('Red')
     for j in range(100):

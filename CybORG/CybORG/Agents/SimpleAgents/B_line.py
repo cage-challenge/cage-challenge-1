@@ -48,7 +48,7 @@ class B_lineAgent(BaseAgent):
             elif self.action == 3:
                 hostname = [value for key, value in observation.items() if key != 'success' and 'System info' in value][0]['System info']['Hostname']
                 action = PrivilegeEscalate(agent='Red', hostname=hostname, session=session)
-                    
+
             # Discover Network Services- new IP address found
             elif self.action == 4:
                 self.last_ip_address = observation['Enterprise1']['Interface'][0]['IP Address']
@@ -63,7 +63,7 @@ class B_lineAgent(BaseAgent):
             elif self.action == 6:
                 hostname = [value for key, value in observation.items() if key != 'success' and 'System info' in value][0]['System info']['Hostname']
                 action = PrivilegeEscalate(agent='Red', hostname=hostname, session=session)
-                    
+
             # Scanning the new subnet found.
             elif self.action == 7:
                 self.last_subnet = observation['Enterprise1']['Interface'][0]['Subnet']
@@ -73,7 +73,7 @@ class B_lineAgent(BaseAgent):
             elif self.action == 8:
                 self.target_ip_address = [value for key, value in observation.items() if key != 'success'][2]['Interface'][0]['IP Address']
                 action = DiscoverNetworkServices(session=session, agent='Red', ip_address=self.target_ip_address)
-                    
+
             # Exploit- Enterprise2
             elif self.action == 9:
                 self.target_ip_address = [value for key, value in observation.items() if key != 'success'][0]['Interface'][0]['IP Address']
@@ -83,21 +83,26 @@ class B_lineAgent(BaseAgent):
             elif self.action == 10:
                 hostname = [value for key, value in observation.items() if key != 'success' and 'System info' in value][0]['System info']['Hostname']
                 action = PrivilegeEscalate(agent='Red', hostname=hostname, session=session)
-                    
+
             # Discover Network Services- Op_Server0
             elif self.action == 11:
                 action = DiscoverNetworkServices(session=session, agent='Red', ip_address=observation['Op_Server0']['Interface'][0]['IP Address'])
-                    
+
             # Exploit- Op_Server0
             elif self.action == 12:
-                action = ExploitRemoteService(agent='Red', session=session, ip_address=[value for key, value in observation.items() if key != 'success'][0]['Interface'][0]['IP Address'])
+                info = [value for key, value in observation.items() if key != 'success']
+                if len(info) > 0:
+                    action = ExploitRemoteService(agent='Red', session=session, ip_address=info[0]['Interface'][0]['IP Address'])
+                else:
+                    self.action = 0
+                    continue
             # Privilege escalation on Op_Server0
             elif self.action == 13:
                 action = PrivilegeEscalate(agent='Red', hostname='Op_Server0', session=session)
             # Impact on Op_server0
             elif self.action == 14:
                 action = Impact(agent='Red', session=session, hostname='Op_Server0')
-                    
+
             if self.action not in self.action_history:
                 self.action_history[self.action] = action
             return action

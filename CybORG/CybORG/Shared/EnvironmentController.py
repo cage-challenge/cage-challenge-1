@@ -1,4 +1,5 @@
-# Copyright DST Group. Licensed under the MIT license.
+## The following code contains work of the United States Government and is not subject to domestic copyright protection under 17 USC § 105.
+## Additionally, we waive copyright and related rights in the utilized code worldwide through the CC0 1.0 Universal public domain dedication.
 
 import sys
 import yaml
@@ -161,7 +162,9 @@ class EnvironmentController:
                 agent_session = list(self.get_action_space(agent_name)['session'].keys())[0]
                 agent_observation = self._filter_obs(
                     self.execute_action(Monitor(session=agent_session, agent='Blue')), agent_name)
+                first_action_success = self.observation[agent_name].success
                 self.observation[agent_name].combine_obs(agent_observation)
+                self.observation[agent_name].set_success(first_action_success)
                 agent_object.update(self.observation[agent_name])
         # if done then complete other agent's turn
 

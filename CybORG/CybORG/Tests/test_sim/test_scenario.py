@@ -1,7 +1,7 @@
 from CybORG.Shared.Actions import PrivilegeEscalate, MS17_010_PSExec, UpgradeToMeterpreter, SSHLoginExploit, \
     MeterpreterIPConfig, MSFAutoroute, MSFPingsweep, MSFPortscan, GetFileInfo, GetProcessList, GetProcessInfo, \
     VelociraptorPoll, GetLocalGroups, GetUsers, GetOSInfo, Sleep, Impact, Monitor, Analyse, Restore, Remove, \
-    DiscoverNetworkServices, DiscoverRemoteSystems, ExploitRemoteService
+    DiscoverNetworkServices, DiscoverRemoteSystems, ExploitRemoteService, Misinform
 
 import pytest
 
@@ -89,6 +89,7 @@ def test_scenario_action_space(create_cyborg_sim):
                                                          Monitor: True,
                                                          Analyse: True,
                                                          Remove: True,
+                                                         Misinform: True,
                                                          Restore: True},
                                               'subnet': {cyborg_obj.environment_controller.subnet_cidr_map['User']: True,
                                                          cyborg_obj.environment_controller.subnet_cidr_map[

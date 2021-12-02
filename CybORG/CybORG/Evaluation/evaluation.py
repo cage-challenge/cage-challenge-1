@@ -22,7 +22,7 @@ def wrap(env):
 
 
 if __name__ == "__main__":
-    cyborg_version = '1.0'
+    cyborg_version = '1.2'
     scenario = 'Scenario1b'
     # ask for a name
     name = input('Name: ')

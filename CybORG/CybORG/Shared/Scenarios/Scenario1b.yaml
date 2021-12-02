@@ -64,6 +64,7 @@ Agents:
       - Monitor
       - Analyse
       - Remove
+      - Misinform
       - Restore
     agent_type: SleepAgent
     reward_calculator_type: HybridAvailabilityConfidentiality

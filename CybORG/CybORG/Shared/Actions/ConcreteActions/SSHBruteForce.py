@@ -1,17 +1,21 @@
-# Copyright DST Group. Licensed under the MIT license.
+## The following code contains work of the United States Government and is not subject to domestic copyright protection under 17 USC § 105.
+## Additionally, we waive copyright and related rights in the utilized code worldwide through the CC0 1.0 Universal public domain dedication.
 from ipaddress import IPv4Address
+from typing import Optional
 
-from CybORG.Shared.Actions.ConcreteActions.ConcreteAction import ConcreteAction
+from CybORG.Shared.Actions.ConcreteActions.ExploitAction import ExploitAction
 from CybORG.Shared.Actions.MSFActionsFolder.MSFAction import lo, lo_subnet
-from CybORG.Shared.Enums import SessionType, ProcessType, OperatingSystemType
+from CybORG.Shared.Enums import SessionType, ProcessType, OperatingSystemType, DecoyType
 from CybORG.Shared.Observation import Observation
 from CybORG.Simulator.Host import Host
 from CybORG.Simulator.State import State
+from CybORG.Simulator.Process import Process
 
 
-class SSHBruteForce(ConcreteAction):
+class SSHBruteForce(ExploitAction):
     def __init__(self, ip_address: IPv4Address, agent: str, session: int, target_session: int):
-        super().__init__(session=session, agent=agent)
+        super().__init__(session=session, agent=agent, ip_address=ip_address,
+                target_session=target_session)
         self.ip_address = ip_address
         self.target_session = target_session
 
@@ -50,7 +54,7 @@ class SSHBruteForce(ConcreteAction):
                         originating_ip_address = i.ip_address
 
         # find out if smb is open
-        vuln_proc = None
+        vuln_proc: Optional[Process] = None
         for proc in target_host.processes:
             if proc.process_type == ProcessType.SSH:
                 for conn in proc.connections:
@@ -80,13 +84,21 @@ class SSHBruteForce(ConcreteAction):
                                                              'local_port': 22
                                                              })
 
-        if user is not None:
+        if user is not None and not (vuln_proc.decoy_type & DecoyType.EXPLOIT):
             obs.set_success(True)
 
             new_proc = target_host.add_process(name="sshd", ppid=vuln_proc.pid, path=vuln_proc.path, user=user.username, process_type="ssh")
 
-            new_session = state.add_session(host=target_host.hostname, agent=self.agent,
+            if bool(vuln_proc.decoy_type & DecoyType.SANDBOXING_EXPLOIT):
+
+                new_session = state.add_session(host=target_host.hostname, agent=self.agent,
+                                            user=user.username, session_type="ssh", parent=session, process=new_proc.pid,
+                                            is_escalate_sandbox=True)
+            else:
+
+                new_session = state.add_session(host=target_host.hostname, agent=self.agent,
                                             user=user.username, session_type="ssh", parent=session, process=new_proc.pid)
+
             remote_port = target_host.get_ephemeral_port()
             new_connection = {"local_port": 22,
                               "Application Protocol": "tcp",

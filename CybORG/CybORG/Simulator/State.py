@@ -1,4 +1,5 @@
-# Copyright DST Group. Licensed under the MIT license.
+## The following code contains work of the United States Government and is not subject to domestic copyright protection under 17 USC § 105.
+## Additionally, we waive copyright and related rights in the utilized code worldwide through the CC0 1.0 Universal public domain dedication.
 import copy
 from datetime import datetime, timedelta
 from ipaddress import IPv4Network, IPv4Address
@@ -175,14 +176,15 @@ class State:
                 host.create_backup()
 
     def add_session(self, host: str, user: str, agent: str, parent: int, process=None, session_type: str = "shell",
-                    timeout: int = 0) -> Session:
+            timeout: int = 0, is_escalate_sandbox: bool = False) -> Session:
         """Adds a session of a selected type to a dict as a selected user"""
         ident = self.sessions_count[agent]
         if parent in self.sessions[agent]:
             parent = self.sessions[agent][parent]
         self.sessions_count[agent] += 1
         new_session = self.hosts[host].add_session(username=user, ident=ident, timeout=timeout, pid=process,
-                                                   session_type=session_type, agent=agent, parent=parent)
+                                                   session_type=session_type, agent=agent, parent=parent,
+                                                   is_escalate_sandbox=is_escalate_sandbox)
         self.sessions[agent][ident] = new_session
         return new_session
 
@@ -198,12 +200,22 @@ class State:
     def remove_process(self, hostname: str, pid: int):
         host = self.hosts[hostname]
         process = host.get_process(pid)
-        agent, session = self.get_session_from_pid(hostname=hostname, pid=pid)
-        if process in host.processes:
+        if process is not None:
+            agent, session = self.get_session_from_pid(hostname=hostname, pid=pid)
             host.processes.remove(process)
-        if session is not None:
-            host.sessions[agent].remove(session)
-            self.sessions[agent].pop(session)
+            if process.pid in [i['process'] for i in host.services.values()]:
+                process.pid = None
+                host.add_process(**process.__dict__)
+                service = True
+            else:
+                service = False
+            if session is not None:
+                host.sessions[agent].remove(session)
+                session = self.sessions[agent].pop(session)
+                if service:
+                    session_reloaded = self.add_session(host=host.hostname, user=session.user,
+                                                        session_type=session.session_type, agent=session.agent,
+                                                        parent=session.parent, timeout=session.timeout)
 
     def get_session_from_pid(self, hostname, pid):
         for agent, sessions in self.sessions.items():

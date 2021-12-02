@@ -1,4 +1,5 @@
-# Copyright DST Group. Licensed under the MIT license.
+## The following code contains work of the United States Government and is not subject to domestic copyright protection under 17 USC § 105.
+## Additionally, we waive copyright and related rights in the utilized code worldwide through the CC0 1.0 Universal public domain dedication.
 from ipaddress import IPv4Address
 
 from CybORG.Shared.Enums import SessionType, OperatingSystemType
@@ -8,7 +9,9 @@ from CybORG.Simulator.Entity import Entity
 class Session(Entity):
 
     def __init__(self, ident: int, host: str, username: str, agent: str,
-                 pid: int, timeout: int = 0, session_type: str = 'shell', active: bool = True, parent=None, name=None):
+                 pid: int, timeout: int = 0, session_type: str = 'shell', 
+                 active: bool = True, parent=None, name=None,
+                 is_escalate_sandbox: bool = False):
         super().__init__()
         self.ident = ident
         self.host = host
@@ -21,6 +24,7 @@ class Session(Entity):
         self.active = active
         self.children = {}
         self.name = name
+        self.is_escalate_sandbox = is_escalate_sandbox
 
     def get_state(self):
         return {"username": self.username, "session_id": self.ident, "timeout": self.timeout,

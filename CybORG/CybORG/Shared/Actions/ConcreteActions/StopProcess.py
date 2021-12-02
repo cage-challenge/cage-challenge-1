@@ -37,7 +37,7 @@ class StopProcess(ConcreteAction):
     def kill_process(self, state: State, host: Host, process: Process):
         agent, session = state.get_session_from_pid(host.hostname, pid=process.pid)
         host.processes.remove(process)
-        if process.pid in [i['process'].pid for i in host.services.values()]:
+        if process.pid in [i['process'] for i in host.services.values()]:
             process.pid = None
             host.add_process(**process.__dict__)
             service = True
@@ -46,7 +46,7 @@ class StopProcess(ConcreteAction):
         if session is not None:
             host.sessions[agent].remove(session)
             state.sessions[agent].pop(session)
-        if service:
-            session_reloaded = state.add_session(host=host.hostname, user=session.user,
-                                                session_type=session.session_type, agent=session.agent,
-                                                parent=session.parent, timeout=session.timeout)
+            if service:
+                session_reloaded = state.add_session(host=host.hostname, user=session.user,
+                                                    session_type=session.session_type, agent=session.agent,
+                                                    parent=session.parent, timeout=session.timeout)

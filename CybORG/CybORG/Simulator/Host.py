@@ -1,13 +1,19 @@
-# Copyright DST Group. Licensed under the MIT license.
+## The following code contains work of the United States Government and is not subject to domestic copyright protection under 17 USC § 105.
+## Additionally, we waive copyright and related rights in the utilized code worldwide through the CC0 1.0 Universal public domain dedication.
 import hashlib
 from copy import deepcopy
 from datetime import datetime
 
 from ipaddress import IPv4Network, IPv4Address
 from random import randrange
+from typing import Optional, List
 
-from CybORG.Shared.Enums import SessionType, OperatingSystemPatch, OperatingSystemKernelVersion, OperatingSystemVersion, \
-    OperatingSystemDistribution, OperatingSystemType
+from CybORG.Shared.Enums import (
+        SessionType, OperatingSystemPatch, OperatingSystemKernelVersion,
+        OperatingSystemVersion, DecoyType,
+        OperatingSystemDistribution, OperatingSystemType
+        )
+
 from CybORG.Simulator.Entity import Entity
 from CybORG.Simulator.File import File
 from CybORG.Simulator.Interface import Interface
@@ -104,7 +110,8 @@ class Host(Entity):
         self.ephemeral_ports.append(port)
         return port
 
-    def add_session(self, username, ident, agent, parent, timeout=0, pid=None, session_type="Shell", name=None, artifacts=None):
+    def add_session(self, username, ident, agent, parent, timeout=0, pid=None, session_type="Shell", name=None, artifacts=None,
+            is_escalate_sandbox:bool=False):
         if parent is not None:
             parent_id = parent.ident
         else:
@@ -122,7 +129,7 @@ class Host(Entity):
                                              timeout=timeout, session_type=session_type, name=name, artifacts=artifacts)
         else:
             new_session = Session(host=self.hostname, agent=agent, username=username, ident=ident, pid=pid,
-                                  timeout=timeout, parent=parent_id, session_type=session_type, name=name)
+                                  timeout=timeout, parent=parent_id, session_type=session_type, name=name, is_escalate_sandbox=is_escalate_sandbox)
 
         if parent is not None:
             parent.children[new_session.ident] = new_session
@@ -136,7 +143,7 @@ class Host(Entity):
 
     def add_process(self, name: str, user: str, pid: int = None, ppid: int = None, path: str = None,
                     program: str = None, process_type: str = None, version: str = None, open_ports: list = None,
-                    connections=None):
+                    decoy_type: DecoyType = DecoyType.NONE, connections=None, properties: Optional[List[str]] = None):
         if pid is None:
             pids = []
             for process in self.processes:
@@ -148,7 +155,7 @@ class Host(Entity):
             open_ports = [open_ports]
 
         process = Process(pid=pid, process_name=name, parent_pid=ppid, path=path, username=user, program_name=program,
-                          process_type=process_type, process_version=version, open_ports=open_ports)
+                          process_type=process_type, process_version=version, open_ports=open_ports, decoy_type = decoy_type, properties = properties)
         self.processes.append(process)
         return process
 
@@ -259,13 +266,14 @@ class Host(Entity):
                 self.services[service_name]['active'] = False
                 return self.services[service_name]['process']
 
-    def add_service(self, service_name: str, process: Process, session=None):
+    def add_service(self, service_name: str, process: int, session=None):
         """adds a service, and starts it"""
         if service_name not in self.services:
             self.services[service_name] = {'process': process, 'active': True,
                                            'session': session}  # consider turning into a class
-        else:
-            raise ValueError(f'Service {service_name} already on host {self.hostname}')
+        # TODO debug duplicate service error
+        # else:
+        #     raise ValueError(f'Service {service_name} already on host {self.hostname}')
 
     def create_backup(self):
 
