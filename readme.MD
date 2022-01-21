@@ -51,7 +51,7 @@ The effect of each action on the state of a targeted host is summarised in Figur
 
 The green agent only performs the discovery action, and does not exploit hosts\. It should prevent the blue agent from assuming all network activity is due to the red agent\.
 
-Every time the blue agent takes a step, the green agent will firstly choose and enact an action, followed by the red agent, before the blue agent’s action is finally enacted\. The blue agent then receives an observation and reward based on the events which occurred during this entire process\. 
+The order in which the agents choose and enact actions is blue, then green then red\. Before acting again, the blue agent receives an observation and reward based on the events that occurred as a result of the green and red actions\. 
 
 The blue agent receives a negative reward any time the red agent gets administrator access to a system\. They continue to receive negative rewards as long as the red agent maintains administrator access\. The amount of each reward is dependent on the relative importance of that host to the confidentiality or availability of the entire system: -0\.1 and -1\.0 for low and high importance systems respectively \(see Table 1\)\. They also receive a negative reward if the red agent successfully uses the Impact action on the operational server \(\-10\) or the blue agent uses the restore action on any host \(\-1\) \(see Table 2\)\. The final score for a blue agent is the cumulative reward received by the agent over the course of the scenario run\.
  
