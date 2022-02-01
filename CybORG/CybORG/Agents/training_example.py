@@ -24,7 +24,7 @@ def run_training_example(scenario):
     action_count = 0
     agent = TestAgent()
     for i in range(MAX_EPS):  # laying multiple games
-        # print(f"\rTraining Game: {i}", end='', flush=True)
+        print(f"\rTraining Game: {i}", end='', flush=True)
         reward = 0
         for j in range(MAX_STEPS_PER_GAME):  # step in 1 game
             action = agent.get_action(observation, action_space)
@@ -35,7 +35,7 @@ def run_training_example(scenario):
             agent.train(observation)  # training the agent
             observation = next_observation
             if done or j == MAX_STEPS_PER_GAME - 1:
-                # print(f"Training reward: {reward}")
+                print(f"Training reward: {reward}")
                 break
         observation = cyborg.reset(agent=agent_name)
         agent.end_episode()
