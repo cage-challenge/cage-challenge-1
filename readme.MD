@@ -1,6 +1,104 @@
 # TTCP CAGE Challenge 1
 ![Banner](/images/TTCP-Logo-small.png) ![Banner](/images/CAGE-Logo-small.png)
 
+# Leader Board (provisional)
+
+<table>
+    <thead>
+        <tr>
+            <th colspan="5" rowspan="2"></th>
+            <th colspan="9">Evaluation Test Scores</th>
+        </tr>
+        <tr>
+            <th colspan="3">30 steps</th>
+            <th colspan="3">50 steps</th>
+            <th colspan="3">100 steps</th>
+        </tr>
+        <tr>
+            <th>Ranking</th>
+            <th>Team Name</th>
+            <th>Method</th>
+            <th>CybORG Version</th>
+            <th>Total Score</th>
+            <th>B_line</th>
+            <th>Meander</th>
+            <th>Sleep</th>
+            <th>B_line</th>
+            <th>Meander</th>
+            <th>Sleep</th>
+            <th>B_line</th>
+            <th>Meander</th>
+            <th>Sleep</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>Raytheon SRG</td>
+            <td>Concept Network</td>
+            <td>v1.2</td>
+            <td>-120.51</td>
+            <td>-14.38</td>
+            <td>-7.24</td>
+            <td>0</td>
+            <td>-25.88</td>
+            <td>-8.76</td>
+            <td>0</td>
+            <td>-47.15</td>
+            <td>-17.1</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>CUABv2</td>
+            <td>DDQN with a RNN</td>
+            <td>v1.2</td>
+            <td>-126.28</td>
+            <td>-6.73</td>
+            <td>-6.48</td>
+            <td>0</td>
+            <td>-12.14</td>
+            <td>-15.99</td>
+            <td>0</td>
+            <td>-30.16</td>
+            <td>-54.78</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>CUABv1</td>
+            <td>DDQN</td>
+            <td>v1.1</td>
+            <td>-130.18</td>
+            <td>-7.79</td>
+            <td>-5</td>
+            <td>0</td>
+            <td>-11.99</td>
+            <td>-15.9</td>
+            <td>0</td>
+            <td>-19.5</td>
+            <td>-70</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Mindrake</td>
+            <td>A2C</td>
+            <td>v1.2</td>
+            <td>-891.68</td>
+            <td>-58.15</td>
+            <td>-31.39</td>
+            <td>0</td>
+            <td>-123.56</td>
+            <td>-107.93</td>
+            <td>0</td>
+            <td>-273.77</td>
+            <td>-296.88</td>
+            <td>0</td>
+        </tr>
+    </tbody>
+</table>
+
 Recent advances in artificial intelligence \(AI\) technologies show promise for autonomous cyber operations \(ACO\), offering the potential for distributed, adaptive defensive measures at machine speed and scale\. The cyber domain is a particularly challenging domain for autonomous AI\. We nominate a challenge in this space which we believe requires further research in order to enable ACO to become an operational capability\. To facilitate this AI research, we, the TTCP[^1] CAGE[^2] Working Group, are releasing CybORG, an experimental platform using the OpenAI Gym interface together with a cyber security scenario and a challenge to which we invite researchers to respond\. 
 
 [^1]: The Technical Cooperation Program (TTCP) is an international organisation that collaborates in defence scientific and technical information exchange; program harmonisation and alignment; and shared research activities in Australia, Canada, New Zealand, the United Kingdom and the United States of America.
