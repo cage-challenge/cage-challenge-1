@@ -34,6 +34,22 @@
     <tbody>
         <tr>
             <td>1</td>
+            <td>Mindrake</td>
+            <td>PPO</td>
+            <td>v1.2</td>
+            <td>-24.94</td>
+            <td>-2.83</td>
+            <td>-2.66</td>
+            <td>0</td>
+            <td>-3.56</td>
+            <td>-3.22</td>
+            <td>0</td>
+            <td>-8.09</td>
+            <td>-4.58</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>2</td>
             <td>Raytheon SRG</td>
             <td>Concept Network</td>
             <td>v1.2</td>
@@ -49,7 +65,7 @@
             <td>0</td>
         </tr>
         <tr>
-            <td>2</td>
+            <td>3</td>
             <td>CUABv2</td>
             <td>DDQN with a RNN</td>
             <td>v1.2</td>
@@ -65,7 +81,7 @@
             <td>0</td>
         </tr>
         <tr>
-            <td>3</td>
+            <td>4</td>
             <td>CUABv1</td>
             <td>DDQN</td>
             <td>v1.1</td>
@@ -78,22 +94,6 @@
             <td>0</td>
             <td>-19.5</td>
             <td>-70</td>
-            <td>0</td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td>Mindrake</td>
-            <td>A2C</td>
-            <td>v1.2</td>
-            <td>-891.68</td>
-            <td>-58.15</td>
-            <td>-31.39</td>
-            <td>0</td>
-            <td>-123.56</td>
-            <td>-107.93</td>
-            <td>0</td>
-            <td>-273.77</td>
-            <td>-296.88</td>
             <td>0</td>
         </tr>
     </tbody>
