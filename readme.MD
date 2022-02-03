@@ -257,9 +257,11 @@ For each combination of trial length and red agent, CybORG is run for 10 episode
 
 2 December 2021: Release of extended version of the Challenge problem with a Misinform action available to the blue agent\.
 
-1 February 2022: Challenge closed\.
+~~1 February 2022: Challenge closed\.~~
 
-4 February 2022: Final results announced\.
+7 February 2022 (any time zone): Updated final day for challenge submissions.
+
+11 ~~4~~ February 2022: Final results announced\.
 
 # Future challenges
 
