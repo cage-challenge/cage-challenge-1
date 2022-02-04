@@ -10,6 +10,15 @@ class BaseWrapper:
     Has the abstract methods to be implemented in the inherited classes.
     """
     def __init__(self, env: CybORG = None, agent: BaseAgent = None):
+        """Initialize wrapper object
+
+        Parameters
+        ----------
+        env : CybORG, optional
+            The environment being used, by default None
+        agent : BaseAgent, optional
+            The agent that needs to use the wrapper, by default None
+        """
         # wrapper allows changes to be made to the interface between external agents via specification of the env
         self.env = env
         # wrapper allows changes to be made to the interface between internal agents via specification of the agent
@@ -20,8 +29,8 @@ class BaseWrapper:
 
         Parameters
         ----------
-        agent : [type], optional
-            [description], by default None
+        agent : BaseAgent, optional
+            The agent that needs to use the wrapper, by default None
         action : [type], optional
             [description], by default None
 
@@ -36,16 +45,16 @@ class BaseWrapper:
         return result
 
     def reset(self, agent=None):
-        """[summary]
+        """Reset environment for given agent
 
         Parameters
         ----------
-        agent : [type], optional
-            [description], by default None
+        agent : BaseAgent, optional
+            The agent that needs to use the wrapper, by default None
 
         Returns
         -------
-        [type]
+        result
             [description]
         """
         result = self.env.reset(agent)
@@ -111,7 +120,7 @@ class BaseWrapper:
         return observation
 
     def action_space_change(self, action_space: dict) -> dict:
-        """[summary]
+        """Make a change to the action_space based on wrapper requirements
 
         Parameters
         ----------

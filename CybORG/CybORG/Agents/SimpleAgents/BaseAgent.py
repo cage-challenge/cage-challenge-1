@@ -54,7 +54,7 @@ class BaseAgent:
         raise NotImplementedError
 
     def set_initial_values(self, action_space, observation):
-        """[summary]
+        """Set initial values.
 
         Parameters
         ----------
