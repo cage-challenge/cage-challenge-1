@@ -251,6 +251,8 @@ The evaluation.py file is designed to provide a standardised evaluation for comp
 
 For each combination of trial length and red agent, CybORG is run for 10 episodes and the total reward received by the blue agent is recorded for each episode\. The mean and standard deviation for each set of episodes are recorded in the evaluation file\.
 
+The validation process involves summing the average scores of 1000 episodes for each combination of trial length and red agent\.  Those results will be published in the final leader board\.
+
 ## Important dates
 
 20 August 2021: Challenge announced at ACD 2021 and open for submissions\.
