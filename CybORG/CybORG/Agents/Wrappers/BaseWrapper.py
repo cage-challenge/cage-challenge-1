@@ -24,38 +24,40 @@ class BaseWrapper:
         # wrapper allows changes to be made to the interface between internal agents via specification of the agent
         self.agent = agent
 
-    def step(self, agent=None, action=None) -> Results:
-        """[summary]
+    def step(self, agent: str = None, action=None) -> Results:
+        """
+        Make the agent perform the given action and update observation and
+        action_space.
 
         Parameters
         ----------
-        agent : BaseAgent, optional
+        agent : str, optional
             The agent that needs to use the wrapper, by default None
-        action : [type], optional
-            [description], by default None
+        action : Action, optional
+            A specific cyber tool that can be executed by an agent, by default None
 
         Returns
         -------
-        Results
-            [description]
+        result : Results
+            Has action_space and observation dictionaries.
         """
         result = self.env.step(agent, action)
         result.observation = self.observation_change(result.observation)
         result.action_space = self.action_space_change(result.action_space)
         return result
 
-    def reset(self, agent=None):
-        """Reset environment for given agent
+    def reset(self, agent: str = None):
+        """Reset environment to be used for a different agent or set up
 
         Parameters
         ----------
-        agent : BaseAgent, optional
+        agent : str, optional
             The agent that needs to use the wrapper, by default None
 
         Returns
         -------
-        result
-            [description]
+        result : Results
+            Contains fresh action_space and observation dictionaries
         """
         result = self.env.reset(agent)
         result.action_space = self.action_space_change(result.action_space)
@@ -63,59 +65,70 @@ class BaseWrapper:
         return result
 
     def get_action(self, observation: dict, action_space: dict):
-        """[summary]
+        """Gets an action from the agent that should be performed based on the agent's internal state and provided observation and action space.
 
         Parameters
         ----------
         observation : dict
-            [description]
+            Has two keys - 'success' and 'User0'. 
+            success tells us if the previous action ran without errors or not.
+            User0 is a dict that contains information about the host. 
+            Refer to ../../Shared/Observation.py for more info.
         action_space : dict
-            [description]
+            Has the actions and parameters that are updated at each step.
+            Actions are the tools used to attack/defend.
+            Parameters are the inputs to the tools.
 
         Returns
         -------
-        [type]
-            [description]
+        Action
         """
         return self.agent.get_action(self.observation_change(observation), self.action_space_change(action_space))
 
     def train(self, result: Results):
-        """[summary]
+        """Trains an agent with the new tuple from the environment
 
         Parameters
         ----------
         result : Results
-            [description]
-        """        
-        """Trains an agent with the new tuple from the environment"""
+            Has action_space and observation dictionaries.
+        """
         result.action_space = self.action_space_change(result.action_space)
         result.observation = self.observation_change(result.observation)
         self.agent.train(result)
 
     def set_initial_values(self, observation: dict, action_space: dict):
-        """[summary]
+        """Set the initial values for the current agent.
 
         Parameters
         ----------
         observation : dict
-            [description]
+            Has two keys - 'success' and 'User0'.
+            success tells us if the previous action ran without errors or not.
+            User0 is a dict that contains information about the host. 
+            Refer to ../../Shared/Observation.py for more info.
         action_space : dict
-            [description]
+            Has the actions and parameters that are updated at each step.
+            Actions are the tools used to attack/defend.
+            Parameters are the inputs to the tools.
         """
         self.agent.set_initial_values(action_space, observation)
 
     def observation_change(self, observation: dict) -> dict:
-        """[summary]
+        """Change value of observation
 
         Parameters
         ----------
         observation : dict
-            [description]
+            Has two keys - 'success' and 'User0'.
+            success tells us if the previous action ran without errors or not.
+            User0 is a dict that contains information about the host. 
+            Refer to ../../Shared/Observation.py for more info.
 
         Returns
         -------
-        dict
-            [description]
+        observation : dict
+            Modified observation
         """
         return observation
 
@@ -125,72 +138,74 @@ class BaseWrapper:
         Parameters
         ----------
         action_space : dict
-            [description]
+            Has the actions and parameters that are updated at each step.
+            Actions are the tools used to attack/defend.
+            Parameters are the inputs to the tools.
 
         Returns
         -------
-        dict
-            [description]
+        action_space : dict
+            Modified action_space
         """
         return action_space
 
     def end_episode(self):
-        """[summary]
+        """Allows the agent to update its internal state.
         """
         self.agent.end_episode()
 
     def get_action_space(self, agent: str) -> dict:
-        """[summary]
+        """Gets the action space for a chosen agent
 
         Parameters
         ----------
         agent : str
-            [description]
+            Given agent
 
         Returns
         -------
         dict
-            [description]
+            action_space for given agent
         """
         return self.action_space_change(self.env.get_action_space(agent))
 
     def get_observation(self, agent: str):
-        """[summary]
+        """Get observation for chosen agent
 
         Parameters
         ----------
         agent : str
-            [description]
+            Given agent
 
         Returns
         -------
-        [type]
-            [description]
+        dict
+            observation for given agent
         """
         return self.observation_change(self.env.get_observation(agent))
 
     def get_last_action(self, agent: str):
-        """[summary]
+        """Get last action performed by given agent
 
         Parameters
         ----------
         agent : str
-            [description]
+            Given agent
 
         Returns
         -------
-        [type]
-            [description]
+        Action
+            last action of given agent
         """
         return self.env.get_last_action(agent=agent)
 
     def set_seed(self, seed: int):
-        """[summary]
+        """Set seed value for environment
 
         Parameters
         ----------
         seed : int
-            [description]
+            use this integer for initializing a random number generator
         """
         self.env.set_seed(seed)
 

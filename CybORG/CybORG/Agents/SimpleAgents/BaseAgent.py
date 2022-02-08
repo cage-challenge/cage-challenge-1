@@ -10,7 +10,7 @@ class BaseAgent:
         Parameters
         ----------
         results : Results
-            Has action_space and observation attributes.
+            Has action_space and observation dictionaries.
 
         Raises
         ------
