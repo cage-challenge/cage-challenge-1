@@ -1,13 +1,15 @@
 # TTCP CAGE Challenge 1
 ![Banner](/images/TTCP-Logo-small.png) ![Banner](/images/CAGE-Logo-small.png)
 
-# Leader Board (provisional)
+# Leader Board (final)
+
+We are pleased to announce the final results of the TTCP CAGE Challenge 1 in the table below\.  We received seven submissions in total, with three being improvements upon previous submissions (and not listed below)\. 
 
 <table>
     <thead>
         <tr>
             <th colspan="5" rowspan="2"></th>
-            <th colspan="9">Evaluation Test Scores</th>
+            <th colspan="9">Validated Test Scores</th>
         </tr>
         <tr>
             <th colspan="3">30 steps</th>
@@ -37,15 +39,15 @@
             <td>Mindrake</td>
             <td>PPO</td>
             <td>v1.2</td>
-            <td>-24.94</td>
-            <td>-2.83</td>
-            <td>-2.66</td>
+            <td>-30.07 ± 14.25</td>
+            <td>-2.63</td>
+            <td>-2.28</td>
             <td>0</td>
-            <td>-3.56</td>
-            <td>-3.22</td>
+            <td>-4.71</td>
+            <td>-3.60</td>
             <td>0</td>
-            <td>-8.09</td>
-            <td>-4.58</td>
+            <td>-11.01</td>
+            <td>-5.84</td>
             <td>0</td>
         </tr>
         <tr>
@@ -53,15 +55,15 @@
             <td>Raytheon SRG</td>
             <td>Concept Network</td>
             <td>v1.2</td>
-            <td>-120.51</td>
-            <td>-14.38</td>
-            <td>-7.24</td>
+            <td>-49.35 ± 23.02</td>
+            <td>-3.87</td>
+            <td>-3.27</td>
             <td>0</td>
-            <td>-25.88</td>
-            <td>-8.76</td>
+            <td>-6.81</td>
+            <td>-6.66</td>
             <td>0</td>
-            <td>-47.15</td>
-            <td>-17.1</td>
+            <td>-14.06</td>
+            <td>-14.68</td>
             <td>0</td>
         </tr>
         <tr>
@@ -69,35 +71,41 @@
             <td>CUABv2</td>
             <td>DDQN with a RNN</td>
             <td>v1.2</td>
-            <td>-126.28</td>
-            <td>-6.73</td>
-            <td>-6.48</td>
+            <td>-119.01 ± 60.82</td>
+            <td>-6.87</td>
+            <td>-6.00</td>
             <td>0</td>
-            <td>-12.14</td>
-            <td>-15.99</td>
+            <td>-12.67</td>
+            <td>-16.87</td>
             <td>0</td>
-            <td>-30.16</td>
-            <td>-54.78</td>
+            <td>-27.47</td>
+            <td>-49.13</td>
             <td>0</td>
         </tr>
         <tr>
             <td>4</td>
             <td>CUABv1</td>
             <td>DDQN</td>
-            <td>v1.1</td>
-            <td>-130.18</td>
-            <td>-7.79</td>
-            <td>-5</td>
+            <td>v1.2</td>
+            <td>-213.76 ± 112.07</td>
+            <td>-8.10</td>
+            <td>-9.39</td>
             <td>0</td>
-            <td>-11.99</td>
-            <td>-15.9</td>
+            <td>-19.22</td>
+            <td>-30.62</td>
             <td>0</td>
-            <td>-19.5</td>
-            <td>-70</td>
+            <td>-59.66</td>
+            <td>-86.77</td>
             <td>0</td>
         </tr>
     </tbody>
 </table>
+
+We would like to thank all those who participated in our first challenge\.  We will be giving a presentation on the results of the first challenge as well as launching TTCP CAGE Challenge 2 on 1<sup>st</sup> March at the AAAI-22 Workshop on Artificial Intelligence for Cyber Security (AICS) https://aaai.org/Conferences/AAAI-22/ws22workshops/#ws09.
+
+Please note that the CUABv1 submission was developed in CybORG v1.1 (which didn’t include the Misinform extension) and the result listed in the table is validated in CybORG v1.2\.  CUABv1 achieved a total score of -55.65 ± 25.90 in CybORG v1.1\. The validated total scores are the result of summing the average scores of 1000 episodes for each combination of trial length and red agent with random.seed(117), with 95% confidence intervals calculated and shown.
+
+# Introduction
 
 Recent advances in artificial intelligence \(AI\) technologies show promise for autonomous cyber operations \(ACO\), offering the potential for distributed, adaptive defensive measures at machine speed and scale\. The cyber domain is a particularly challenging domain for autonomous AI\. We nominate a challenge in this space which we believe requires further research in order to enable ACO to become an operational capability\. To facilitate this AI research, we, the TTCP[^1] CAGE[^2] Working Group, are releasing CybORG, an experimental platform using the OpenAI Gym interface together with a cyber security scenario and a challenge to which we invite researchers to respond\. 
 
