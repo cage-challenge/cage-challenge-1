@@ -22,13 +22,13 @@ We are pleased to announce the final results of the TTCP CAGE Challenge 1 in the
             <th>Method</th>
             <th>CybORG Version</th>
             <th>Total Score</th>
-            <th>B_line</th>
+            <th>B-line</th>
             <th>Meander</th>
             <th>Sleep</th>
-            <th>B_line</th>
+            <th>B-line</th>
             <th>Meander</th>
             <th>Sleep</th>
-            <th>B_line</th>
+            <th>B-line</th>
             <th>Meander</th>
             <th>Sleep</th>
         </tr>
@@ -37,9 +37,9 @@ We are pleased to announce the final results of the TTCP CAGE Challenge 1 in the
         <tr>
             <td>1</td>
             <td>Mindrake</td>
-            <td>PPO</td>
+            <td>Hierarchical PPO with Curiosity</td>
             <td>v1.2</td>
-            <td>-30.07 ± 14.25</td>
+            <td>-30.07 ± 0.67</td>
             <td>-2.63</td>
             <td>-2.28</td>
             <td>0</td>
@@ -53,9 +53,9 @@ We are pleased to announce the final results of the TTCP CAGE Challenge 1 in the
         <tr>
             <td>2</td>
             <td>Raytheon SRG</td>
-            <td>Concept Network</td>
+            <td>Hierarchical PPO</td>
             <td>v1.2</td>
-            <td>-49.35 ± 23.02</td>
+            <td>-49.35 ± 0.37</td>
             <td>-3.87</td>
             <td>-3.27</td>
             <td>0</td>
@@ -71,7 +71,7 @@ We are pleased to announce the final results of the TTCP CAGE Challenge 1 in the
             <td>CUABv2</td>
             <td>DDQN with a RNN</td>
             <td>v1.2</td>
-            <td>-119.01 ± 60.82</td>
+            <td>-119.01 ± 2.29</td>
             <td>-6.87</td>
             <td>-6.00</td>
             <td>0</td>
@@ -87,7 +87,7 @@ We are pleased to announce the final results of the TTCP CAGE Challenge 1 in the
             <td>CUABv1</td>
             <td>DDQN</td>
             <td>v1.2</td>
-            <td>-213.76 ± 112.07</td>
+            <td>-213.76 ± 6.45</td>
             <td>-8.10</td>
             <td>-9.39</td>
             <td>0</td>
@@ -101,9 +101,9 @@ We are pleased to announce the final results of the TTCP CAGE Challenge 1 in the
     </tbody>
 </table>
 
-We would like to thank all those who participated in our first challenge\.  We will be giving a presentation on the results of the first challenge as well as launching TTCP CAGE Challenge 2 on 1<sup>st</sup> March at the AAAI-22 Workshop on Artificial Intelligence for Cyber Security (AICS) https://aaai.org/Conferences/AAAI-22/ws22workshops/#ws09.
+We would like to thank all those who participated in our first challenge\.  We will be giving a presentation on the results of the first challenge on 1<sup>st</sup> March at the AAAI-22 Workshop on Artificial Intelligence for Cyber Security (AICS) https://aaai.org/Conferences/AAAI-22/ws22workshops/#ws09. TTCP CAGE Challenge 2 will be launched later in March 2022.
 
-Please note that the CUABv1 submission was developed in CybORG v1.1 (which didn’t include the Misinform extension) and the result listed in the table is validated in CybORG v1.2\.  CUABv1 achieved a total score of -55.65 ± 25.90 in CybORG v1.1\. The validated total scores are the result of summing the average scores of 1000 episodes for each combination of trial length and red agent with random.seed(117), with 95% confidence intervals calculated and shown.
+Please note that the CUABv1 submission was developed in CybORG v1.1 (which didn’t include the Misinform extension) and the result listed in the table is validated in CybORG v1.2\.  CUABv1 achieved a total score of -55.65 ± 1.35 in CybORG v1.1\. The validated total scores are the result of summing the average scores of 1000 episodes for each combination of trial length and red agent with random.seed(117), with 95% confidence intervals calculated and shown.
 
 # Introduction
 
@@ -255,7 +255,7 @@ A leader board for submissions will be maintained until February 2022\. Final re
 The evaluation.py file is designed to provide a standardised evaluation for comparison that incorporates multiple different trial lengths and red agents\. These are:
 
 - Trial Length: 30, 50, 100
-- Red Agents: Meander \(explore randomly\), Beeline \(move directly to the operational server\), No Action
+- Red Agents: Meander \(explore randomly\), Beeline \(move directly to the operational server\), No Action \(sleep\)
 
 For each combination of trial length and red agent, CybORG is run for 10 episodes and the total reward received by the blue agent is recorded for each episode\. The mean and standard deviation for each set of episodes are recorded in the evaluation file\.
 
