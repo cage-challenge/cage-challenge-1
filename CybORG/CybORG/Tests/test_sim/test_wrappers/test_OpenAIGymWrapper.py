@@ -1,6 +1,9 @@
-import pytest
 import inspect
+
+import pytest
+import numpy as np
 from gym import spaces
+
 from CybORG import CybORG
 from CybORG.Agents.Wrappers.OpenAIGymWrapper import OpenAIGymWrapper
 from CybORG.Agents.Wrappers.FixedFlatWrapper import FixedFlatWrapper
@@ -21,7 +24,7 @@ def test_steps():
 
     # assert isinstance(obs, object) # Redundant because everything in python is an object
     assert obs is not None
-    assert isinstance(reward, float)
+    assert isinstance(reward, np.float32)
     assert isinstance(done, bool)
     assert isinstance(info, dict)
 
