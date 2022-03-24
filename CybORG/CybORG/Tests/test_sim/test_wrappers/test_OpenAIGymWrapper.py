@@ -24,7 +24,7 @@ def test_steps():
 
     # assert isinstance(obs, object) # Redundant because everything in python is an object
     assert obs is not None
-    assert isinstance(reward, np.float32)
+    assert isinstance(reward, float)
     assert isinstance(done, bool)
     assert isinstance(info, dict)
 
@@ -129,11 +129,11 @@ def test_get_attr(cyborg):
 def test_get_observation(cyborg):
     step_obs = cyborg.reset()
     method_obs = cyborg.get_observation(cyborg.agent_name)
-    assert all(step_obs == method_obs)
+    assert all(step_obs == np.array(method_obs, dtype=np.float32))
 
     step_obs, reward, done, info = cyborg.step()
     method_obs = cyborg.get_observation(cyborg.agent_name)
-    assert all(step_obs == method_obs)
+    assert all(step_obs == np.array(method_obs, dtype=np.float32))
 
 def test_get_agent_state(cyborg):
     cyborg.reset()
