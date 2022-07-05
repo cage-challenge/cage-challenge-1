@@ -51,9 +51,5 @@ def test_restore_removes_malware(cyborg):
         if has_malware:
             malware_hosts.append((host, results.observation[host]))
 
-    try:
-        assert len(malware_hosts) == 0
-    except:
-        from pprint import pprint
-        breakpoint()
+    assert len(malware_hosts) == 0
 
