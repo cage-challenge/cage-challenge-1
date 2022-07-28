@@ -203,7 +203,7 @@ class State:
         if process is not None:
             agent, session = self.get_session_from_pid(hostname=hostname, pid=pid)
             host.processes.remove(process)
-            if process.pid in [i['process'] for i in host.services.values()]:
+            if process.pid in [i['process'] for i in host.services.values() if i['active']]:
                 process.pid = None
                 host.add_process(**process.__dict__)
                 service = True
