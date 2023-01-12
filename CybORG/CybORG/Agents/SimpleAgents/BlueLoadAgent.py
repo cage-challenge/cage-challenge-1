@@ -1,7 +1,7 @@
 '''
 This is a modified version of the CybORG BlueLoadAgent that was developed to enhance the capability of the original and improve on it
 
-Developed:  Sky Tainyi Zhang
+Developed:  Sky TianYi Zhang
             Mitchell Knyn
             Jayden Fowler
             
@@ -9,14 +9,8 @@ Date: 12 January 2023
 '''
 
 
-
-
-
-
 import inspect
-
 from stable_baselines3 import PPO
-
 from CybORG import CybORG
 from CybORG.Agents.SimpleAgents.BaseAgent import BaseAgent
 from CybORG.Agents.Wrappers.EnumActionWrapper import EnumActionWrapper
@@ -54,11 +48,8 @@ class BlueLoadAgent(BaseAgent):
         obs = env.reset()
         for i in range(num_steps):
             action, _states = self.model.predict(obs)
-
             obs, reward, done, info = env.step(action)
-
             episode_rewards[-1] += reward
-
             if done:
                 obs = env.reset()
         episode_rewards.append(0.0)
