@@ -70,12 +70,12 @@ class BlueLoadAgent(BaseAgent):
     def __init__(self, model_file: str = "ppo_training"):
         if os.path.exists(ppo_path):
             self.model = PPO.load(model_file)
-            print("\nsuccessfully loaded the ppo file\n")
+            print("\nSuccessfully loaded the ppo file\n")
         else:
             self.model = PPO('MlpPolicy', cyborg)
             self.model.learn(total_timesteps=int(200), log_interval=10)
             self.model.save("ppo_training")
-            print("\nNo Model file, trained new one\n")
+            print("\nNo Model file, create new ppo file\n")
 
     def get_action(self, observation, action_space):
         """gets an action from the agent that should be performed based on the agent's internal state and provided observation and action space"""
