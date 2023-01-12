@@ -70,7 +70,7 @@ class BlueLoadAgent(BaseAgent):
     def __init__(self, model_file: str = "ppo_training"):
         if os.path.exists(ppo_path):
             self.model = PPO.load(model_file)
-            print("model_file is not None")
+            print("\nsuccessfully loaded the ppo file\n")
         else:
             self.model = PPO('MlpPolicy', cyborg)
             self.model.learn(total_timesteps=int(200), log_interval=10)
