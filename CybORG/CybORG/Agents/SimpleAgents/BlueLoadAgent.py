@@ -64,7 +64,7 @@ class BlueLoadAgent(BaseAgent):
             print("\nSuccessfully loaded the ppo file\n")
         else:
             self.model = PPO('MlpPolicy', cyborg)
-            self.model.learn(total_timesteps=int(200), log_interval=10)
+            self.model.learn(total_timesteps=int(30000), log_interval=10, progress_bar=True)
             self.model.save("ppo_training")
             print("\nNo Model file, create new ppo file\n")
 

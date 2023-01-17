@@ -41,3 +41,5 @@ zipp==0.6.0
 networkx
 matplotlib
 gym
+tqdm
+rich
