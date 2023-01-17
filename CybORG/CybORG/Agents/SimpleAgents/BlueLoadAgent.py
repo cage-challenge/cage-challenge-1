@@ -33,7 +33,15 @@ ppo_path = ppo_path[:-10] + "/Evaluation/ppo_training.zip"
 
 class BlueLoadAgent(BaseAgent):
     # agent that loads a StableBaselines3 PPO model file
-    def train(self, results):
+    def train(self):
+        if os.path.exists(ppo_path):
+            self.model = PPO.load("ppo_training")
+            print("model_file is not None")
+        else:
+            self.model = PPO('MlpPolicy', cyborg)
+            self.model.learn(total_timesteps=int(10000), progress_bar=True)
+            self.model.save("ppo_training")
+            print("\nNo Model file, trained new one\n")
         pass
 
     def end_episode(self):
@@ -41,7 +49,9 @@ class BlueLoadAgent(BaseAgent):
 
     def set_initial_values(self, action_space, observation):
         pass
-        
+    
+    def wrap(env):
+        return OpenAIGymWrapper("Blue", EnumActionWrapper(FixedFlatWrapper(ReduceActionSpaceWrapper(env))))
 
     def evaluate(self,num_steps):
         episode_rewards = [0.0]
@@ -58,15 +68,15 @@ class BlueLoadAgent(BaseAgent):
 
         return mean_100ep_reward
 
-    def __init__(self, model_file: str = "ppo_training"):
-        if os.path.exists(ppo_path):
-            self.model = PPO.load(model_file)
-            print("\nSuccessfully loaded the ppo file\n")
-        else:
-            self.model = PPO('MlpPolicy', cyborg)
-            self.model.learn(total_timesteps=int(30000), log_interval=10, progress_bar=True)
-            self.model.save("ppo_training")
-            print("\nNo Model file, create new ppo file\n")
+    def __init__(self):
+        self.scanned_subnets = []
+        self.scanned_ips = []
+        self.exploited_ips = []
+        self.escalated_hosts = []
+        self.host_ip_map = {}
+        self.last_host = None
+        self.last_ip = None
+        self.train()
 
     def get_action(self, observation, action_space):
         """gets an action from the agent that should be performed based on the agent's internal state and provided observation and action space"""
