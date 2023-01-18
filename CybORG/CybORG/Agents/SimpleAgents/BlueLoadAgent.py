@@ -5,7 +5,7 @@ Developed:  Sky TianYi Zhang
             Mitchell Knyn
             Jayden Fowler
             
-Last Modified: 17 January 2023
+Last Modified: 18 January 2023
 '''
 
 
@@ -36,7 +36,7 @@ class BlueLoadAgent(BaseAgent):
     def train(self):
         if os.path.exists(ppo_path):
             self.model = PPO.load("ppo_training")
-            print("model_file is not None")
+            print("\nModel file found, loaded\n")
         else:
             self.model = PPO('MlpPolicy', cyborg)
             self.model.learn(total_timesteps=int(10000), progress_bar=True)

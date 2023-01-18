@@ -54,8 +54,8 @@ if __name__ == "__main__":
 
     print(f'using CybORG v{cyborg_version}, {scenario}\n')
     if linePrint == 1:
-    	print("{:<15} {:<25} {:<20} {:<10}".format('Agent','Score','Standard Deviation','Step'))
-    	linePrint - 1
+        print("{:<15} {:<25} {:<20} {:<10}".format('Agent','Score','Standard Deviation','Step'))
+        linePrint - 1
     for num_steps in [30, 50, 100]:
         for red_agent in [B_lineAgent, RedMeanderAgent, SleepAgent]:
 
