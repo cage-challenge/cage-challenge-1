@@ -13,6 +13,7 @@ from CybORG.Agents.Wrappers.FixedFlatWrapper import FixedFlatWrapper
 from CybORG.Agents.Wrappers.OpenAIGymWrapper import OpenAIGymWrapper
 from CybORG.Agents.Wrappers.ReduceActionSpaceWrapper import ReduceActionSpaceWrapper
 from CybORG.Agents.Wrappers import ChallengeWrapper
+import pprint
 
 MAX_EPS = 10
 agent_name = 'Blue'
@@ -61,8 +62,9 @@ if __name__ == "__main__":
 
             cyborg = CybORG(path, 'sim', agents={'Red': red_agent})
             wrapped_cyborg = wrap(cyborg)
-
+            
             observation = wrapped_cyborg.reset()
+        
             # observation = cyborg.reset().observation
 
             action_space = wrapped_cyborg.get_action_space(agent_name)
@@ -74,6 +76,7 @@ if __name__ == "__main__":
                 a = []
                 # cyborg.env.env.tracker.render()
                 for j in range(num_steps):
+                    
                     action = agent.get_action(observation, action_space)
                     observation, rew, done, info = wrapped_cyborg.step(action)
                     # result = cyborg.step(agent_name, action)

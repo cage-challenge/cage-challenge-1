@@ -17,6 +17,7 @@ from CybORG.Agents.Wrappers.EnumActionWrapper import EnumActionWrapper
 from CybORG.Agents.Wrappers.FixedFlatWrapper import FixedFlatWrapper
 from CybORG.Agents.Wrappers.OpenAIGymWrapper import OpenAIGymWrapper
 from CybORG.Agents.Wrappers.ReduceActionSpaceWrapper import ReduceActionSpaceWrapper
+from CybORG.Agents.Wrappers import *
 import numpy as np
 import os
 
@@ -30,6 +31,29 @@ path = path[:-10] + '/Shared/Scenarios/Scenario1b.yaml'
 cyborg = OpenAIGymWrapper('Blue', EnumActionWrapper(FixedFlatWrapper(ReduceActionSpaceWrapper(CybORG(path, 'sim')))))
 ppo_path = str(inspect.getfile(CybORG))
 ppo_path = ppo_path[:-10] + "/Evaluation/ppo_training.zip"
+
+#Defines the vector for each host
+observationHostnameVector = {
+    "Impact on OpServer": np.float32(-1),
+    "Enterprise0": np.float32(0.2),
+    "Enterprise1": np.float32(0.4),
+    "Enterprise2": np.float32(0.6),
+    "User1": np.float32(0.8),
+    "OpServer0": np.float32(1),
+    "User3": np.float32(1.4),
+    "User0": np.float32(1.6)
+}
+
+#Defines the vector for each action
+actionVector = {
+    "Remove Enterprise0": 16,
+    "Remove Enterprise1": 17,
+    "Remove Enterprsie2": 18,
+    "Remove OpServer0": 22,
+    "Remove User1": 24,
+    "Remove User3": 26,
+    "Restore OpServer0": 48
+}
 
 class BlueLoadAgent(BaseAgent):
     # agent that loads a StableBaselines3 PPO model file
@@ -83,52 +107,53 @@ class BlueLoadAgent(BaseAgent):
 
     def get_action(self, observation, action_space):
         """gets an action from the agent that should be performed based on the agent's internal state and provided observation and action space"""
-        #print(observation[1])
-        if observation[1] == np.float32(1) or self.task == 2:
-            action = 48
+        
+        if observation[1] == observationHostnameVector["OpServer0"] or self.task == 2:
+            action = actionVector["Restore OpServer0"]
             if self.task == 2:
                 action = 48
                 self.task = 0
             else:
                 self.task = self.task + 2
-        #print("Op_Server", type(observation[1]))
-        elif observation[1] == np.float32(0.6) or self.task == 3:
-            #print("Enterprise2", type(observation[1]))
-            action = 18
+
+        elif observation[1] == observationHostnameVector["Enterprise2"] or self.task == 3:
+            action = actionVector["Remove Enterprsie2"]
             if self.task == 3:
                 self.task = 0
             else:
                 self.task = self.task + 3
-        elif observation[1] == np.float32(0.4) or self.task == 1:
-            action = 17
+                
+        elif observation[1] == observationHostnameVector["Enterprise1"] or self.task == 1:
+            action = actionVector["Remove Enterprise1"]
             if self.task == 1:
                 self.task = 0
             else:
                 self.task = self.task + 1
-        #print("Enterprise1", type(observation[1]))
-        elif observation[1] == np.float32(0.8) or self.task == 4:
-            action = 24
+
+        elif observation[1] == observationHostnameVector["User1"] or self.task == 4:
+            action = actionVector["Remove User1"]
             if self.task == 4:
                 self.task = 0
             else:
                 self.task = self.task + 4
-            #print("User1", type(observation[1]))
-        elif observation[1] == np.float32(0.2) or self.task == 5:
-            action = 16
+
+        elif observation[1] == observationHostnameVector["Enterprise0"] or self.task == 5:
+            action = actionVector["Remove Enterprise0"]
             if self.task == 5:
                 self.task = 0
             else:
                 self.task = self.task + 5
-            #print("Enterprise0", type(observation[1]))
-        elif observation[1] == np.float32(1.4) or self.task == 6:
-            action = 26
+
+        elif observation[1] == observationHostnameVector["User3"] or self.task == 6:
+            action = actionVector["Remove User3"]
             if self.task == 6:
                 self.task = 0
             else:
                 self.task = self.task + 6
-            #print("User3", type(observation[1]))
+
         else:
-            action = 22
-            #action, _states = self.model.predict(observation)
+            action = actionVector["Remove OpServer0"]
+            action, _states = self.model.predict(observation)
+            
         return action
         
