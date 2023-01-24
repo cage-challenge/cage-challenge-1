@@ -1,0 +1,3 @@
+CybORG v1.0, Scenario1b
+author: , team: , technique: 
+wrappers: OpenAIGymWrapper(agent_name, EnumActionWrapper(FixedFlatWrapper(ReduceActionSpaceWrapper(env))))
